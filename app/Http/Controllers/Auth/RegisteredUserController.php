@@ -31,6 +31,8 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
+            'pegawai_id' => ['nullable', 'numeric', 'max:255'],
+            'username' => ['required', 'string', 'max:50', 'unique:'.User::class],
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
@@ -38,6 +40,8 @@ class RegisteredUserController extends Controller
 
         $user = User::create([
             'name' => $request->name,
+            'username' => $request->username,
+            'role' => 'guest',
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
