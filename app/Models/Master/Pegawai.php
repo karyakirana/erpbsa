@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Pegawai extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, KodeTrait;
     protected $table = 'pegawai';
     protected $fillable = [
         'kode',
@@ -23,4 +23,9 @@ class Pegawai extends Model
         'kota_id',
         'keterangan',
     ];
+
+    public function jabatan()
+    {
+        return $this->belongsTo(Jabatan::class, 'jabatan_id');
+    }
 }
