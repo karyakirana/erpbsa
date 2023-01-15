@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProdukKategori extends Model
 {
-    use HasFactory;
+    use HasFactory, KodeTrait;
     protected $table = 'produk_kategori';
     protected $fillable = [
         'kode',

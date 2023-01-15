@@ -3,27 +3,48 @@
 namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
-use App\Models\Master\Lokasi;
+use App\Models\Master\ProdukKategori;
 use Illuminate\Http\Request;
 
-class LokasiController extends Controller
+class ProdukKategoriController extends Controller
 {
     protected function kode()
     {
-        $data = Lokasi::latest('kode')->first();
+        $data = ProdukKategori::latest('kode')->first();
         if (!$data){
             $num = 1;
         } else {
             $lastNum = (int) $data->last_num_master;
             $num = $lastNum + 1;
         }
-        return "L".sprintf("%05s", $num);
+        return "K".sprintf("%05s", $num);
     }
 
-    public function getData(Request $request)
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'nama' => 'required|max:50',
+            'keterangan' => 'nullable'
+        ]);
+        $data['kode'] = $this->kode();
+        try {
+            $query = ProdukKategori::create($data);
+            return response()->json([
+                'status' => 200,
+                'data' => $query
+            ]);
+        } catch (\Exception $e){
+            return response()->json([
+                'status' => 403,
+                'messages' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function view(Request $request)
     {
         try {
-            $query = Lokasi::query();
+            $query = ProdukKategori::query();
             if (!is_null($request->search)){
                 $query->where('nama', 'like', '%'.$request->search.'%')
                     ->orWhere('keterangan', 'like', '%'.$request->search.'%');
@@ -40,31 +61,10 @@ class LokasiController extends Controller
         }
     }
 
-    public function edit($jabatan_id)
+    public function edit($produk_kategori_id)
     {
         try {
-            $query = Lokasi::find($jabatan_id);
-            return response()->json([
-                'status' => 200,
-                'data' => $query
-            ]);
-        } catch (\Exception $e){
-            return response()->json([
-                'status' => 403,
-                'messages' => $e->getMessage()
-            ]);
-        }
-    }
-
-    public function store(Request $request)
-    {
-        $data = $request->validate([
-            'nama' => 'required|max:50',
-            'keterangan' => 'nullable'
-        ]);
-        $data['kode'] = $this->kode();
-        try {
-            $query = Lokasi::create($data);
+            $query = ProdukKategori::find($produk_kategori_id);
             return response()->json([
                 'status' => 200,
                 'data' => $query
@@ -80,13 +80,13 @@ class LokasiController extends Controller
     public function update(Request $request)
     {
         $data = $request->validate([
-            'lokasi_id' => 'required',
+            'produk_kategori_id' => 'required',
             'nama' => 'required|max:50',
             'keterangan' => 'nullable'
         ]);
 
         try {
-            $query = Lokasi::find($data['lokasi_id'])->update($data);
+            $query = ProdukKategori::find($data['produk_kategori_id'])->update($data);
             return response()->json([
                 'status' => 200,
                 'data' => $query
@@ -102,7 +102,7 @@ class LokasiController extends Controller
     public function destroy(Request $request)
     {
         try {
-            $query = Lokasi::destroy($request->lokasi_id);
+            $query = ProdukKategori::destroy($request->produk_kategori_id);
             return response()->json([
                 'status' => 200,
                 'messages' => 'Data sudah di hapus'

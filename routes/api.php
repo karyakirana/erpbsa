@@ -55,4 +55,16 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::put('master/customer/', [\App\Http\Controllers\Master\CustomerController::class, 'update']);
     Route::patch('master/customer', [\App\Http\Controllers\Master\CustomerController::class, 'view']);
     Route::delete('master/customer/', [\App\Http\Controllers\Master\CustomerController::class, 'destroy']);
+    // produk kategori
+    Route::get('master/produkkategori/{produk_kategori_id}', [\App\Http\Controllers\Master\ProdukKategoriController::class, 'edit']);
+    Route::post('master/produkkategori/', [\App\Http\Controllers\Master\ProdukKategoriController::class, 'store']);
+    Route::put('master/produkkategori/', [\App\Http\Controllers\Master\ProdukKategoriController::class, 'update']);
+    Route::patch('master/produkkategori', [\App\Http\Controllers\Master\ProdukKategoriController::class, 'view']);
+    Route::delete('master/produkkategori/', [\App\Http\Controllers\Master\ProdukKategoriController::class, 'destroy']);
+    // produk
+    Route::get('master/produk/{produk_id}', [\App\Http\Controllers\Master\ProdukController::class, 'edit']);
+    Route::post('master/produk/', [\App\Http\Controllers\Master\ProdukController::class, 'store']);
+    Route::put('master/produk/', [\App\Http\Controllers\Master\ProdukController::class, 'update']);
+    Route::patch('master/produk', [\App\Http\Controllers\Master\ProdukController::class, 'view']);
+    Route::delete('master/produk/', [\App\Http\Controllers\Master\ProdukController::class, 'destroy']);
 });
