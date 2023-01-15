@@ -49,4 +49,10 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::put('master/supplier/', [\App\Http\Controllers\Master\SupplierController::class, 'update']);
     Route::patch('master/supplier', [\App\Http\Controllers\Master\SupplierController::class, 'view']);
     Route::delete('master/supplier/', [\App\Http\Controllers\Master\SupplierController::class, 'destroy']);
+    // customer
+    Route::get('master/customer/{customer_id}', [\App\Http\Controllers\Master\CustomerController::class, 'edit']);
+    Route::post('master/customer/', [\App\Http\Controllers\Master\CustomerController::class, 'store']);
+    Route::put('master/customer/', [\App\Http\Controllers\Master\CustomerController::class, 'update']);
+    Route::patch('master/customer', [\App\Http\Controllers\Master\CustomerController::class, 'view']);
+    Route::delete('master/customer/', [\App\Http\Controllers\Master\CustomerController::class, 'destroy']);
 });

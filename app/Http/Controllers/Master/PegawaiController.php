@@ -36,10 +36,10 @@ class PegawaiController extends Controller
         $data['kode'] = $this->kode();
         $data['status'] = 'active';
         try {
-            $jabatan = Pegawai::create($data);
+            $query = Pegawai::create($data);
             return response()->json([
                 'status' => 200,
-                'data' => $jabatan
+                'data' => $query
             ]);
         } catch (\Exception $e){
             return response()->json([
