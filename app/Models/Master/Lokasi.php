@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Lokasi extends Model
 {
-    use HasFactory;
+    use HasFactory, KodeTrait;
     protected $table = 'lokasi';
     protected $fillable = [
         'kode',
