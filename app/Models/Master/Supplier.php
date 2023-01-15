@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Supplier extends Model
 {
-    use HasFactory;
+    use HasFactory, KodeTrait;
     protected $table = 'supplier';
     protected $fillable = [
         'kode',

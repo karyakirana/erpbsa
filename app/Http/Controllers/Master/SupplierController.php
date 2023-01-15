@@ -3,29 +3,57 @@
 namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
-use App\Models\Master\Lokasi;
+use App\Models\Master\Supplier;
 use Illuminate\Http\Request;
 
-class LokasiController extends Controller
+class SupplierController extends Controller
 {
     protected function kode()
     {
-        $data = Lokasi::latest('kode')->first();
+        $data = Supplier::latest('kode')->first();
         if (!$data){
             $num = 1;
         } else {
             $lastNum = (int) $data->last_num_master;
             $num = $lastNum + 1;
         }
-        return "L".sprintf("%05s", $num);
+        return "S".sprintf("%05s", $num);
     }
 
-    public function getData(Request $request)
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'nama' => 'required|max:50',
+            'telepon' => 'required|max:20',
+            'email' => 'nullable|max:50',
+            'npwp' => 'nullable|max:20',
+            'alamat' => 'required',
+            'kota_id' => 'required',
+            'keterangan' => 'nullable'
+        ]);
+        $data ['kode'] = $this->kode();
+        try {
+            $query = Supplier::create($data);
+            return response()->json([
+                'status' => 200,
+                'data' => $query
+            ]);
+        } catch (\Exception $e){
+            return response()->json([
+                'status' => 403,
+                'messages' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function view(Request $request)
     {
         try {
-            $query = Lokasi::query();
+            $query = Supplier::query();
             if (!is_null($request->search)){
                 $query->where('nama', 'like', '%'.$request->search.'%')
+                    ->orWhere('telepon', 'like', '%'.$request->search.'%')
+                    ->orWhere('email', 'like', '%'.$request->search.'%')
                     ->orWhere('keterangan', 'like', '%'.$request->search.'%');
             }
             return response()->json([
@@ -40,31 +68,10 @@ class LokasiController extends Controller
         }
     }
 
-    public function edit($jabatan_id)
+    public function edit($supplier_id)
     {
         try {
-            $query = Lokasi::find($jabatan_id);
-            return response()->json([
-                'status' => 200,
-                'data' => $query
-            ]);
-        } catch (\Exception $e){
-            return response()->json([
-                'status' => 403,
-                'messages' => $e->getMessage()
-            ]);
-        }
-    }
-
-    public function store(Request $request)
-    {
-        $data = $request->validate([
-            'nama' => 'required|max:50',
-            'keterangan' => 'nullable'
-        ]);
-        $data['kode'] = $this->kode();
-        try {
-            $query = Lokasi::create($data);
+            $query = Supplier::find($supplier_id);
             return response()->json([
                 'status' => 200,
                 'data' => $query
@@ -80,13 +87,17 @@ class LokasiController extends Controller
     public function update(Request $request)
     {
         $data = $request->validate([
-            'jabatan_id' => 'required',
+            'supplier_id' => 'required',
             'nama' => 'required|max:50',
+            'telepon' => 'required|max:20',
+            'email' => 'nullable|max:50',
+            'npwp' => 'nullable|max:20',
+            'alamat' => 'required',
+            'kota_id' => 'required',
             'keterangan' => 'nullable'
         ]);
-
         try {
-            $query = Lokasi::find($data['lokasi_id'])->update($data);
+            $query = Supplier::find($data['supplier_id'])->update($data);
             return response()->json([
                 'status' => 200,
                 'data' => $query
@@ -102,7 +113,7 @@ class LokasiController extends Controller
     public function destroy(Request $request)
     {
         try {
-            $query = Lokasi::destroy($request->lokasi_id);
+            $query = Supplier::destroy($request->supplier_id);
             return response()->json([
                 'status' => 200,
                 'messages' => 'Data sudah di hapus'

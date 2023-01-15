@@ -86,7 +86,7 @@ class JabatanController extends Controller
         ]);
 
         try {
-            $jabatan = Jabatan::find($data->jabatan_id)->update($data);
+            $jabatan = Jabatan::find($data['jabatan_id'])->update($data);
             return response()->json([
                 'status' => 200,
                 'data' => $jabatan

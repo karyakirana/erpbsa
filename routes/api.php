@@ -37,5 +37,10 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::put('master/lokasi/', [\App\Http\Controllers\Master\LokasiController::class, 'update']);
     Route::patch('master/lokasi', [\App\Http\Controllers\Master\LokasiController::class, 'getData']);
     Route::delete('master/lokasi/', [\App\Http\Controllers\Master\LokasiController::class, 'destroy']);
-    // customer
+    // supplier
+    Route::get('master/supplier/{supplier_id}', [\App\Http\Controllers\Master\SupplierController::class, 'edit']);
+    Route::post('master/supplier/', [\App\Http\Controllers\Master\SupplierController::class, 'store']);
+    Route::put('master/supplier/', [\App\Http\Controllers\Master\SupplierController::class, 'update']);
+    Route::patch('master/supplier', [\App\Http\Controllers\Master\SupplierController::class, 'view']);
+    Route::delete('master/supplier/', [\App\Http\Controllers\Master\SupplierController::class, 'destroy']);
 });
