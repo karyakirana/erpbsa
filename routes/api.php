@@ -31,6 +31,12 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::put('master/jabatan/', [\App\Http\Controllers\Master\JabatanController::class, 'update']);
     Route::patch('master/jabatan', [\App\Http\Controllers\Master\JabatanController::class, 'getData']);
     Route::delete('master/jabatan/', [\App\Http\Controllers\Master\JabatanController::class, 'destroy']);
+    // pegawai
+    Route::get('master/pegawai/{pegawai_id}', [\App\Http\Controllers\Master\PegawaiController::class, 'edit']);
+    Route::post('master/pegawai/', [\App\Http\Controllers\Master\PegawaiController::class, 'store']);
+    Route::put('master/pegawai/', [\App\Http\Controllers\Master\PegawaiController::class, 'update']);
+    Route::patch('master/pegawai', [\App\Http\Controllers\Master\PegawaiController::class, 'getData']);
+    Route::delete('master/pegawai/', [\App\Http\Controllers\Master\PegawaiController::class, 'destroy']);
     // lokasi
     Route::get('master/lokasi/{lokasi_id}', [\App\Http\Controllers\Master\LokasiController::class, 'edit']);
     Route::post('master/lokasi/', [\App\Http\Controllers\Master\LokasiController::class, 'store']);
