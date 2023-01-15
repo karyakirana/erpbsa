@@ -25,5 +25,10 @@ Route::middleware('guest')->group(function (){
 
 Route::middleware('auth:sanctum')->group(function (){
     // app on login
+    // jabatan
+    Route::get('master/jabatan/{jabatan_id}', [\App\Http\Controllers\Master\JabatanController::class, 'edit']);
+    Route::post('master/jabatan/', [\App\Http\Controllers\Master\JabatanController::class, 'store']);
+    Route::put('master/jabatan/', [\App\Http\Controllers\Master\JabatanController::class, 'update']);
+    Route::delete('master/jabatan/', [\App\Http\Controllers\Master\JabatanController::class, 'destroy']);
     // customer
 });

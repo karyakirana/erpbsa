@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Jabatan extends Model
 {
-    use HasFactory;
+    use HasFactory, KodeTrait;
     protected $table = 'jabatan';
     protected $fillable = [
         'kode',
