@@ -17,3 +17,13 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::middleware('guest')->group(function (){
+    // app non auth
+    Route::post('login', [\App\Http\Controllers\LoginController::class, 'store'])->name('api.login');
+});
+
+Route::middleware('auth:sanctum')->group(function (){
+    // app on login
+    // customer
+});
