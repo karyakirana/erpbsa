@@ -30,14 +30,14 @@ class ProdukKategoriController extends Controller
         try {
             $query = ProdukKategori::create($data);
             return response()->json([
-                'status' => 200,
+                'status' => true,
                 'data' => $query
-            ]);
+            ], 200);
         } catch (\Exception $e){
             return response()->json([
-                'status' => 403,
+                'status' => false,
                 'messages' => $e->getMessage()
-            ]);
+            ], 403);
         }
     }
 
@@ -50,14 +50,14 @@ class ProdukKategoriController extends Controller
                     ->orWhere('keterangan', 'like', '%'.$request->search.'%');
             }
             return response()->json([
-                'status' => 200,
+                'status' => true,
                 'data' => $query->get()
-            ]);
+            ], 200);
         } catch (\Exception $e){
             return response()->json([
-                'status' => 403,
+                'status' => false,
                 'messages' => $e->getMessage()
-            ]);
+            ], 403);
         }
     }
 
@@ -66,14 +66,14 @@ class ProdukKategoriController extends Controller
         try {
             $query = ProdukKategori::find($produk_kategori_id);
             return response()->json([
-                'status' => 200,
+                'status' => true,
                 'data' => $query
-            ]);
+            ], 200);
         } catch (\Exception $e){
             return response()->json([
                 'status' => 403,
                 'messages' => $e->getMessage()
-            ]);
+            ], 403);
         }
     }
 
@@ -88,14 +88,14 @@ class ProdukKategoriController extends Controller
         try {
             $query = ProdukKategori::find($data['produk_kategori_id'])->update($data);
             return response()->json([
-                'status' => 200,
+                'status' => true,
                 'data' => $query
-            ]);
+            ], 200);
         } catch (\Exception $e){
             return response()->json([
-                'status' => 403,
+                'status' => false,
                 'messages' => $e->getMessage()
-            ]);
+            ], 403);
         }
     }
 
@@ -104,14 +104,14 @@ class ProdukKategoriController extends Controller
         try {
             $query = ProdukKategori::destroy($request->produk_kategori_id);
             return response()->json([
-                'status' => 200,
+                'status' => true,
                 'messages' => 'Data sudah di hapus'
-            ]);
+            ], 200);
         } catch (\Exception $e){
             return response()->json([
-                'status' => 403,
+                'status' => false,
                 'messages' => $e->getMessage()
-            ]);
+            ], 403);
         }
     }
 }

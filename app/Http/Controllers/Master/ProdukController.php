@@ -47,15 +47,15 @@ class ProdukController extends Controller
             }
             \DB::commit();
             return response()->json([
-                'status' => 200,
+                'status' => true,
                 'data' => $produk
-            ]);
+            ], 200);
         } catch (\Exception $e){
             \DB::rollBack();
             return response()->json([
-                'status' => 403,
+                'status' => false,
                 'messages' => $e->getMessage()
-            ]);
+            ], 403);
         }
     }
 
@@ -72,14 +72,14 @@ class ProdukController extends Controller
                     ->orWhere('keterangan', 'like', '%'.$request->search.'%');
             }
             return response()->json([
-                'status' => 200,
+                'status' => true,
                 'data' => $query->get()
-            ]);
+            ], 200);
         } catch (\Exception $e){
             return response()->json([
-                'status' => 403,
+                'status' => false,
                 'messages' => $e->getMessage()
-            ]);
+            ], 403);
         }
     }
 
@@ -88,14 +88,14 @@ class ProdukController extends Controller
         try {
             $query = Produk::find($produk_id)->with(['produkKategori', 'produkKemasan', 'produkKemasan']);
             return response()->json([
-                'status' => 200,
+                'status' => true,
                 'data' => $query
-            ]);
+            ], 200);
         } catch (\Exception $e){
             return response()->json([
-                'status' => 403,
+                'status' => false,
                 'messages' => $e->getMessage()
-            ]);
+            ], 403);
         }
     }
 
@@ -127,14 +127,14 @@ class ProdukController extends Controller
                 $query->produkImage()->createMany($request->produk_image);
             }
             return response()->json([
-                'status' => 200,
+                'status' => true,
                 'data' => $query->refresh()
-            ]);
+            ], 200);
         } catch (\Exception $e){
             return response()->json([
-                'status' => 403,
+                'status' => false,
                 'messages' => $e->getMessage()
-            ]);
+            ], 403);
         }
     }
 
@@ -146,14 +146,14 @@ class ProdukController extends Controller
             $query->produkImage()->delete();
             $query->delete();
             return response()->json([
-                'status' => 200,
+                'status' => true,
                 'messages' => 'Data sudah di hapus'
-            ]);
+            ], 200);
         } catch (\Exception $e){
             return response()->json([
-                'status' => 403,
+                'status' => false,
                 'messages' => $e->getMessage()
-            ]);
+            ], 403);
         }
     }
 }

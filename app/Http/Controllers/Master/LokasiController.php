@@ -29,14 +29,14 @@ class LokasiController extends Controller
                     ->orWhere('keterangan', 'like', '%'.$request->search.'%');
             }
             return response()->json([
-                'status' => 200,
+                'status' => true,
                 'data' => $query->get()
-            ]);
+            ], 200);
         } catch (\Exception $e){
             return response()->json([
-                'status' => 403,
+                'status' => false,
                 'messages' => $e->getMessage()
-            ]);
+            ], 403);
         }
     }
 
@@ -45,14 +45,14 @@ class LokasiController extends Controller
         try {
             $query = Lokasi::find($jabatan_id);
             return response()->json([
-                'status' => 200,
+                'status' => true,
                 'data' => $query
-            ]);
+            ], 200);
         } catch (\Exception $e){
             return response()->json([
-                'status' => 403,
+                'status' => false,
                 'messages' => $e->getMessage()
-            ]);
+            ], 403);
         }
     }
 
@@ -66,14 +66,14 @@ class LokasiController extends Controller
         try {
             $query = Lokasi::create($data);
             return response()->json([
-                'status' => 200,
+                'status' => true,
                 'data' => $query
-            ]);
+            ], 200);
         } catch (\Exception $e){
             return response()->json([
-                'status' => 403,
+                'status' => false,
                 'messages' => $e->getMessage()
-            ]);
+            ], 403);
         }
     }
 
@@ -88,14 +88,14 @@ class LokasiController extends Controller
         try {
             $query = Lokasi::find($data['lokasi_id'])->update($data);
             return response()->json([
-                'status' => 200,
+                'status' => true,
                 'data' => $query
-            ]);
+            ], 200);
         } catch (\Exception $e){
             return response()->json([
-                'status' => 403,
+                'status' => false,
                 'messages' => $e->getMessage()
-            ]);
+            ], 403);
         }
     }
 
@@ -104,14 +104,14 @@ class LokasiController extends Controller
         try {
             $query = Lokasi::destroy($request->lokasi_id);
             return response()->json([
-                'status' => 200,
+                'status' => true,
                 'messages' => 'Data sudah di hapus'
-            ]);
+            ], 200);
         } catch (\Exception $e){
             return response()->json([
-                'status' => 403,
+                'status' => false,
                 'messages' => $e->getMessage()
-            ]);
+            ], 403);
         }
     }
 }

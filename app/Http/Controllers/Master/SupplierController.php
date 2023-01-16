@@ -35,14 +35,14 @@ class SupplierController extends Controller
         try {
             $query = Supplier::create($data);
             return response()->json([
-                'status' => 200,
+                'status' => true,
                 'data' => $query
-            ]);
+            ], 200);
         } catch (\Exception $e){
             return response()->json([
-                'status' => 403,
+                'status' => false,
                 'messages' => $e->getMessage()
-            ]);
+            ], 403);
         }
     }
 
@@ -57,14 +57,14 @@ class SupplierController extends Controller
                     ->orWhere('keterangan', 'like', '%'.$request->search.'%');
             }
             return response()->json([
-                'status' => 200,
+                'status' => true,
                 'data' => $query->get()
-            ]);
+            ], 200);
         } catch (\Exception $e){
             return response()->json([
-                'status' => 403,
+                'status' => false,
                 'messages' => $e->getMessage()
-            ]);
+            ], 403);
         }
     }
 
@@ -73,14 +73,14 @@ class SupplierController extends Controller
         try {
             $query = Supplier::find($supplier_id);
             return response()->json([
-                'status' => 200,
+                'status' => true,
                 'data' => $query
-            ]);
+            ], 200);
         } catch (\Exception $e){
             return response()->json([
-                'status' => 403,
+                'status' => false,
                 'messages' => $e->getMessage()
-            ]);
+            ], 403);
         }
     }
 
@@ -99,14 +99,14 @@ class SupplierController extends Controller
         try {
             $query = Supplier::find($data['supplier_id'])->update($data);
             return response()->json([
-                'status' => 200,
+                'status' => true,
                 'data' => $query
-            ]);
+            ], 200);
         } catch (\Exception $e){
             return response()->json([
-                'status' => 403,
+                'status' => false,
                 'messages' => $e->getMessage()
-            ]);
+            ], 403);
         }
     }
 
@@ -115,14 +115,14 @@ class SupplierController extends Controller
         try {
             $query = Supplier::destroy($request->supplier_id);
             return response()->json([
-                'status' => 200,
+                'status' => true,
                 'messages' => 'Data sudah di hapus'
-            ]);
+            ], 200);
         } catch (\Exception $e){
             return response()->json([
-                'status' => 403,
+                'status' => false,
                 'messages' => $e->getMessage()
-            ]);
+            ], 403);
         }
     }
 }
