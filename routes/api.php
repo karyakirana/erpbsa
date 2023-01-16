@@ -68,3 +68,36 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::patch('master/produk', [\App\Http\Controllers\Master\ProdukController::class, 'view']);
     Route::delete('master/produk/', [\App\Http\Controllers\Master\ProdukController::class, 'destroy']);
 });
+
+Route::middleware('auth:sanctum')->group(function (){
+    // persediaan awal
+    Route::get('persediaan/awal/{persediaan_awal_id}', [\App\Http\Controllers\Stock\PersediaanAwalController::class, 'edit']);
+    Route::post('persediaan/awal/', [\App\Http\Controllers\Stock\PersediaanAwalController::class, 'store']);
+    Route::put('persediaan/awal/', [\App\Http\Controllers\Stock\PersediaanAwalController::class, 'update']);
+    Route::patch('persediaan/awal', [\App\Http\Controllers\Stock\PersediaanAwalController::class, 'show']);
+    Route::delete('persediaan/awal/', [\App\Http\Controllers\Stock\PersediaanAwalController::class, 'destroy']);
+});
+
+Route::middleware('auth:sanctum')->group(function (){
+    // pembelian purchaseorder
+    Route::get('pembelian/purchaseorder/{pemmbelian_po_id}', [\App\Http\Controllers\Pembelian\PembelianPOController::class, 'edit']);
+    Route::post('pembelian/purchaseorder/', [\App\Http\Controllers\Pembelian\PembelianPOController::class, 'store']);
+    Route::put('pembelian/purchaseorder/', [\App\Http\Controllers\Pembelian\PembelianPOController::class, 'update']);
+    Route::patch('pembelian/purchaseorder', [\App\Http\Controllers\Pembelian\PembelianPOController::class, 'show']);
+    Route::delete('pembelian/purchaseorder/', [\App\Http\Controllers\Pembelian\PembelianPOController::class, 'destroy']);
+    // pembelian
+    Route::get('pembelian/{pemmbelian_id}', [\App\Http\Controllers\Pembelian\PembelianController::class, 'edit']);
+    Route::post('pembelian/', [\App\Http\Controllers\Pembelian\PembelianController::class, 'store']);
+    Route::put('pembelian/', [\App\Http\Controllers\Pembelian\PembelianController::class, 'update']);
+    Route::patch('pembelian/', [\App\Http\Controllers\Pembelian\PembelianController::class, 'show']);
+    Route::delete('pembelian/', [\App\Http\Controllers\Pembelian\PembelianController::class, 'destroy']);
+});
+
+Route::middleware('auth:sanctum')->group(function (){
+    // penjualan
+    Route::get('penjualan/{penjualan_id}', [\App\Http\Controllers\Penjualan\PenjualanController::class, 'edit']);
+    Route::post('penjualan/', [\App\Http\Controllers\Penjualan\PenjualanController::class, 'store']);
+    Route::put('penjualan/', [\App\Http\Controllers\Penjualan\PenjualanController::class, 'update']);
+    Route::patch('penjualan/', [\App\Http\Controllers\Penjualan\PenjualanController::class, 'show']);
+    Route::delete('penjualan/', [\App\Http\Controllers\Penjualan\PenjualanController::class, 'destroy']);
+});
