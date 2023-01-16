@@ -38,14 +38,14 @@ class CustomerController extends Controller
         try {
             $query = Customer::create($data);
             return response()->json([
-                'status' => 200,
+                'status' => true,
                 'data' => $query
-            ]);
+            ], 200);
         } catch (\Exception $e){
             return response()->json([
-                'status' => 403,
+                'status' => false,
                 'messages' => $e->getMessage()
-            ]);
+            ], 403);
         }
     }
 
@@ -62,14 +62,14 @@ class CustomerController extends Controller
                     ->orWhere('keterangan', 'like', '%'.$request->search.'%');
             }
             return response()->json([
-                'status' => 200,
+                'status' => true,
                 'data' => $query->get()
-            ]);
+            ], 200);
         } catch (\Exception $e){
             return response()->json([
-                'status' => 403,
+                'status' => false,
                 'messages' => $e->getMessage()
-            ]);
+            ], 403);
         }
     }
 
@@ -78,14 +78,14 @@ class CustomerController extends Controller
         try {
             $query = Customer::find($customer_id);
             return response()->json([
-                'status' => 200,
+                'status' => true,
                 'data' => $query
-            ]);
+            ], 200);
         } catch (\Exception $e){
             return response()->json([
-                'status' => 403,
+                'status' => false,
                 'messages' => $e->getMessage()
-            ]);
+            ], 403);
         }
     }
 
@@ -107,14 +107,14 @@ class CustomerController extends Controller
         try {
             $query = Customer::find($data['customer_id'])->update($data);
             return response()->json([
-                'status' => 200,
+                'status' => true,
                 'data' => $query
-            ]);
+            ], 200);
         } catch (\Exception $e){
             return response()->json([
-                'status' => 403,
+                'status' => false,
                 'messages' => $e->getMessage()
-            ]);
+            ], 403);
         }
     }
 
@@ -123,14 +123,14 @@ class CustomerController extends Controller
         try {
             $query = Customer::destroy($request->customer_id);
             return response()->json([
-                'status' => 200,
+                'status' => true,
                 'messages' => 'Data sudah di hapus'
-            ]);
+            ], 200);
         } catch (\Exception $e){
             return response()->json([
-                'status' => 403,
+                'status' => false,
                 'messages' => $e->getMessage()
-            ]);
+            ], 403);
         }
     }
 }
