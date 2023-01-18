@@ -118,10 +118,10 @@ class CustomerController extends Controller
         }
     }
 
-    public function destroy(Request $request)
+    public function destroy($id)
     {
         try {
-            $query = Customer::where('id', $request->id)->first();
+            $query = Customer::where('id', $id)->first();
             return response()->json([
                 'status' => true,
                 'messages' => 'Data sudah di hapus',

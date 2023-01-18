@@ -54,7 +54,7 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::post('master/customer/', [\App\Http\Controllers\Master\CustomerController::class, 'store']);
     Route::put('master/customer/', [\App\Http\Controllers\Master\CustomerController::class, 'update']);
     Route::patch('master/customer', [\App\Http\Controllers\Master\CustomerController::class, 'view']);
-    Route::delete('master/customer/', [\App\Http\Controllers\Master\CustomerController::class, 'destroy']);
+    Route::delete('master/customer/{id}', [\App\Http\Controllers\Master\CustomerController::class, 'destroy']);
     // produk kategori
     Route::get('master/produkkategori/{produk_kategori_id}', [\App\Http\Controllers\Master\ProdukKategoriController::class, 'edit']);
     Route::post('master/produkkategori/', [\App\Http\Controllers\Master\ProdukKategoriController::class, 'store']);
