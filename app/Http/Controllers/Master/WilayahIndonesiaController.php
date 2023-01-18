@@ -14,7 +14,7 @@ class WilayahIndonesiaController extends Controller
             $kota = Regency::with('province');
             return response()->json([
                 'status' => true,
-                'data' => $kota
+                'data' => $kota->get()
             ], 200);
         } catch (\Exception $e){
             return response()->json([
