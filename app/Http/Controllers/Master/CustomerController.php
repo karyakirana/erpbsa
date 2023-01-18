@@ -121,11 +121,11 @@ class CustomerController extends Controller
     public function destroy($id)
     {
         try {
-            $query = Customer::where('id', $id)->first();
+            $query = Customer::where('id', $id)->delete();
             return response()->json([
                 'status' => true,
                 'messages' => 'Data sudah di hapus',
-                'response' => $request
+                'response' => $query
             ], 200);
         } catch (\Exception $e){
             return response()->json([
