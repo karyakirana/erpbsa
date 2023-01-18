@@ -216,11 +216,11 @@ class PersediaanAwalController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function destroy(Request $request)
+    public function destroy($id)
     {
         \DB::beginTransaction();
         try {
-            $query = PersediaanAwal::find($request->id);
+            $query = PersediaanAwal::find($id);
             $query->persediaanAwalDetail()->delete();
             $query->delete();
             \DB::commit();

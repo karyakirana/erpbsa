@@ -99,10 +99,10 @@ class LokasiController extends Controller
         }
     }
 
-    public function destroy(Request $request)
+    public function destroy($id)
     {
         try {
-            $query = Lokasi::destroy($request->id);
+            $query = Lokasi::destroy($id);
             return response()->json([
                 'status' => true,
                 'messages' => 'Data sudah di hapus'

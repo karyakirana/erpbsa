@@ -142,7 +142,7 @@ class PenjualanController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function destroy(Request $request)
+    public function destroy($id)
     {
         \DB::beginTransaction();
         try {

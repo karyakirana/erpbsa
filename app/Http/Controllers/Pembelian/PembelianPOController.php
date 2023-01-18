@@ -143,11 +143,11 @@ class PembelianPOController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function destroy(Request $request)
+    public function destroy($id)
     {
         \DB::beginTransaction();
         try {
-            $query = PembelianPo::find($request->id);
+            $query = PembelianPo::find($id);
             $query->pembelianPoDetail()->delete();
             $query->delete();
             \DB::commit();

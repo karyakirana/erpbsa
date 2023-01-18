@@ -138,10 +138,10 @@ class ProdukController extends Controller
         }
     }
 
-    public function destroy(Request $request)
+    public function destroy($id)
     {
         try {
-            $query = Produk::find($request->id);
+            $query = Produk::find($id);
             $query->produkKemasan()->delete();
             $query->produkImage()->delete();
             $query->delete();

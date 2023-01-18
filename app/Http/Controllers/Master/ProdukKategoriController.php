@@ -102,7 +102,7 @@ class ProdukKategoriController extends Controller
     public function destroy(Request $request)
     {
         try {
-            $query = ProdukKategori::destroy($request->id);
+            $query = ProdukKategori::destroy($id);
             return response()->json([
                 'status' => true,
                 'messages' => 'Data sudah di hapus'
