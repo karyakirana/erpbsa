@@ -35,7 +35,7 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::get('master/pegawai/{pegawai_id}', [\App\Http\Controllers\Master\PegawaiController::class, 'edit']);
     Route::post('master/pegawai/', [\App\Http\Controllers\Master\PegawaiController::class, 'store']);
     Route::put('master/pegawai/', [\App\Http\Controllers\Master\PegawaiController::class, 'update']);
-    Route::patch('master/pegawai', [\App\Http\Controllers\Master\PegawaiController::class, 'getData']);
+    Route::patch('master/pegawai', [\App\Http\Controllers\Master\PegawaiController::class, 'view']);
     Route::delete('master/pegawai/', [\App\Http\Controllers\Master\PegawaiController::class, 'destroy']);
     // lokasi
     Route::get('master/lokasi/{lokasi_id}', [\App\Http\Controllers\Master\LokasiController::class, 'edit']);
