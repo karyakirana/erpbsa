@@ -52,7 +52,7 @@ class CustomerController extends Controller
     public function view(Request $request)
     {
         try {
-            $query = Customer::query()->with(['sales']);
+            $query = Customer::query()->with(['sales', 'kota']);
             if (!is_null($request->search)){
                 $query->where('nama', 'like', '%'.$request->search.'%')
                     ->orWhereRelation('sales', 'nama', 'like', '%'.$request->search.'%')
