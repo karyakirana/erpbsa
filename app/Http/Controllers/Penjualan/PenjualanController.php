@@ -146,7 +146,7 @@ class PenjualanController extends Controller
     {
         \DB::beginTransaction();
         try {
-            $query = Penjualan::find($request->penjualan_id);
+            $query = Penjualan::find($request->id);
             $query->penjualanDetail()->delete();
             $query->delete();
             \DB::commit();

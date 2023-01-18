@@ -102,7 +102,7 @@ class JabatanController extends Controller
     public function destroy(Request $request)
     {
         try {
-            $jabatan = Jabatan::destroy($request->jabatan_id);
+            $jabatan = Jabatan::destroy($request->id);
             return response()->json([
                 'status' => true,
                 'messages' => 'Data sudah di hapus'

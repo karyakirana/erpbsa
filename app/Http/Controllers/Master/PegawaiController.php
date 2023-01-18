@@ -121,7 +121,7 @@ class PegawaiController extends Controller
     public function destroy(Request $request)
     {
         try {
-            $query = Pegawai::destroy($request->pegawai_id);
+            $query = Pegawai::destroy($request->id);
             return response()->json([
                 'status' => true,
                 'messages' => 'Data sudah di hapus'

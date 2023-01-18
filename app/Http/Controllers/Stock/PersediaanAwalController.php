@@ -220,7 +220,7 @@ class PersediaanAwalController extends Controller
     {
         \DB::beginTransaction();
         try {
-            $query = PersediaanAwal::find($request->persediaan_awal_id);
+            $query = PersediaanAwal::find($request->id);
             $query->persediaanAwalDetail()->delete();
             $query->delete();
             \DB::commit();

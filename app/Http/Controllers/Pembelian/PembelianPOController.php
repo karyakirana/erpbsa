@@ -147,7 +147,7 @@ class PembelianPOController extends Controller
     {
         \DB::beginTransaction();
         try {
-            $query = PembelianPo::find($request->pembelian_po_id);
+            $query = PembelianPo::find($request->id);
             $query->pembelianPoDetail()->delete();
             $query->delete();
             \DB::commit();

@@ -113,7 +113,7 @@ class SupplierController extends Controller
     public function destroy(Request $request)
     {
         try {
-            $query = Supplier::destroy($request->supplier_id);
+            $query = Supplier::destroy($request->id);
             return response()->json([
                 'status' => true,
                 'messages' => 'Data sudah di hapus'
