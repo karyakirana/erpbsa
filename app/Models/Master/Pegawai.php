@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Pegawai extends Model
 {
-    use HasFactory, SoftDeletes, KodeTrait;
+    use HasFactory, KodeTrait;
     protected $table = 'pegawai';
     protected $fillable = [
         'kode',
