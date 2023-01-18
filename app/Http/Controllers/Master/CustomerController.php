@@ -76,7 +76,7 @@ class CustomerController extends Controller
     public function edit($customer_id)
     {
         try {
-            $query = Customer::find($customer_id)->with(['sales', 'kota']);
+            $query = Customer::with(['sales', 'kota'])->find($customer_id);
             return response()->json([
                 'status' => true,
                 'data' => $query
