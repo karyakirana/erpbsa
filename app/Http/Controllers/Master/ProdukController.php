@@ -141,7 +141,7 @@ class ProdukController extends Controller
     public function destroy(Request $request)
     {
         try {
-            $query = Produk::find($request->produk_id);
+            $query = Produk::find($request->id);
             $query->produkKemasan()->delete();
             $query->produkImage()->delete();
             $query->delete();
