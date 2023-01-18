@@ -52,7 +52,7 @@ class PegawaiController extends Controller
     public function view(Request $request)
     {
         try {
-            $query = Pegawai::query();
+            $query = Pegawai::query()->with(['jabatan', 'kota']);
             if (!is_null($request->search)){
                 $query->where('nama', 'like', '%'.$request->search.'%')
                     ->orWhereRelation('jabatan', 'nama', 'like', '%'.$request->search.'%')
@@ -76,7 +76,7 @@ class PegawaiController extends Controller
     public function edit($pegawai_id)
     {
         try {
-            $jabatan = Pegawai::find($pegawai_id);
+            $jabatan = Pegawai::find($pegawai_id)->with(['kota', 'jabatan']);
             return response()->json([
                 'status' => true,
                 'data' => $jabatan
