@@ -69,6 +69,7 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::delete('master/produk/', [\App\Http\Controllers\Master\ProdukController::class, 'destroy']);
     // kota indonesia
     Route::get('master/kota/', [\App\Http\Controllers\Master\WilayahIndonesiaController::class, 'kotaIndonesia']);
+    Route::patch('master/kota/', [\App\Http\Controllers\Master\WilayahIndonesiaController::class, 'kotaIndonesia']);
 });
 
 Route::middleware('auth:sanctum')->group(function (){
