@@ -121,7 +121,7 @@ class CustomerController extends Controller
     public function destroy(Request $request)
     {
         try {
-            $query = Customer::destroy($request->id);
+            $query = Customer::where('id', $request->id)->delete();
             return response()->json([
                 'status' => true,
                 'messages' => 'Data sudah di hapus'
