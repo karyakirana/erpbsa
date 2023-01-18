@@ -125,7 +125,7 @@ class CustomerController extends Controller
             return response()->json([
                 'status' => true,
                 'messages' => 'Data sudah di hapus',
-                'response' => $request->id
+                'response' => $request
             ], 200);
         } catch (\Exception $e){
             return response()->json([
