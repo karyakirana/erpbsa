@@ -68,8 +68,8 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::patch('master/produk', [\App\Http\Controllers\Master\ProdukController::class, 'view']);
     Route::delete('master/produk/{id}', [\App\Http\Controllers\Master\ProdukController::class, 'destroy']);
     // kota indonesia
-    Route::get('master/kota/', [\App\Http\Controllers\Master\WilayahIndonesiaController::class, 'kotaIndonesia']);
-    Route::patch('master/kota/{id}', [\App\Http\Controllers\Master\WilayahIndonesiaController::class, 'kotaIndonesia']);
+    Route::get('master/kota/{id}', [\App\Http\Controllers\Master\WilayahIndonesiaController::class, 'kotaIndonesia']);
+    Route::patch('master/kota/', [\App\Http\Controllers\Master\WilayahIndonesiaController::class, 'kotaIndonesia']);
 });
 
 Route::middleware('auth:sanctum')->group(function (){
@@ -104,5 +104,5 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::post('penjualan/', [\App\Http\Controllers\Penjualan\PenjualanController::class, 'store']);
     Route::put('penjualan/', [\App\Http\Controllers\Penjualan\PenjualanController::class, 'update']);
     Route::patch('penjualan/', [\App\Http\Controllers\Penjualan\PenjualanController::class, 'show']);
-    Route::delete('penjualan/', [\App\Http\Controllers\Penjualan\PenjualanController::class, 'destroy']);
+    Route::delete('penjualan/{penjualan_id}', [\App\Http\Controllers\Penjualan\PenjualanController::class, 'destroy']);
 });
