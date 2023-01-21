@@ -21,21 +21,21 @@ class LoginController extends Controller
                 $request->session()->regenerate();
                 $token = $request->user()->createToken('login_token');
                 return response()->json([
-                    'status' => 200,
+                    'status' => true,
                     'token' => $token->plainTextToken,
-                ]);
+                ], 200);
             }
 
             return response()->json([
-                'status' => 401,
+                'status' => false,
                 'messages' => 'Email dan Paswword Salah'
-            ]);
+            ], 401);
 
         } catch (\Exception $e){
             return response()->json([
-                'status' => 403,
+                'status' => false,
                 'messages' => $e->getMessage()
-            ]);
+            ], 403);
         }
     }
 
