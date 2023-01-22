@@ -49,7 +49,7 @@ class SupplierController extends Controller
     public function view(Request $request)
     {
         try {
-            $query = Supplier::query();
+            $query = Supplier::query()->with(['kota']);
             if (!is_null($request->search)){
                 $query->where('nama', 'like', '%'.$request->search.'%')
                     ->orWhere('telepon', 'like', '%'.$request->search.'%')
@@ -71,7 +71,7 @@ class SupplierController extends Controller
     public function edit($supplier_id)
     {
         try {
-            $query = Supplier::find($supplier_id);
+            $query = Supplier::with(['kota'])->find($supplier_id);
             return response()->json([
                 'status' => true,
                 'data' => $query

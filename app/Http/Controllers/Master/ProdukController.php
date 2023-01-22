@@ -62,7 +62,7 @@ class ProdukController extends Controller
     public function view(Request $request)
     {
         try {
-            $query = Produk::query()->with(['produkKategori', 'produkKemasan', 'produkKemasan']);
+            $query = Produk::query()->with(['produkKategori', 'produkKemasan', 'produkKemasan', 'produkImage']);
             if (!is_null($request->search)){
                 $query->where('nama', 'like', '%'.$request->search.'%')
                     ->orWhereRelation('produkKategori', 'nama', 'like', '%'.$request->search.'%')
@@ -86,7 +86,7 @@ class ProdukController extends Controller
     public function edit($produk_id)
     {
         try {
-            $query = Produk::find($produk_id)->with(['produkKategori', 'produkKemasan', 'produkKemasan']);
+            $query = Produk::with(['produkKategori', 'produkKemasan', 'produkKemasan', 'produkImage'])->find($produk_id);
             return response()->json([
                 'status' => true,
                 'data' => $query

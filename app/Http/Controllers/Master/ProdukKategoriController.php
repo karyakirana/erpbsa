@@ -99,7 +99,7 @@ class ProdukKategoriController extends Controller
         }
     }
 
-    public function destroy(Request $request)
+    public function destroy($id)
     {
         try {
             $query = ProdukKategori::destroy($id);

@@ -76,7 +76,7 @@ class PegawaiController extends Controller
     public function edit($pegawai_id)
     {
         try {
-            $jabatan = Pegawai::find($pegawai_id)->with(['kota', 'jabatan']);
+            $jabatan = Pegawai::with(['kota', 'jabatan'])->find($pegawai_id);
             return response()->json([
                 'status' => true,
                 'data' => $jabatan

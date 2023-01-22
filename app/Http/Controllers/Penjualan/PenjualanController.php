@@ -139,14 +139,14 @@ class PenjualanController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Request $request
+     * @param $id
      * @return JsonResponse
      */
     public function destroy($id)
     {
         \DB::beginTransaction();
         try {
-            $query = Penjualan::find($request->id);
+            $query = Penjualan::find($id);
             $query->penjualanDetail()->delete();
             $query->delete();
             \DB::commit();
