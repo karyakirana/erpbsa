@@ -21,6 +21,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::middleware('guest')->group(function (){
     // app non auth
     Route::post('login', [\App\Http\Controllers\LoginController::class, 'store'])->name('api.login');
+
+});
+
+Route::middleware('auth:sanctum')->get('sessiontest', function (){
+    return response()->json([
+        'session' => session('ClosedCash')
+    ], 200);
 });
 
 Route::middleware('auth:sanctum')->group(function (){
