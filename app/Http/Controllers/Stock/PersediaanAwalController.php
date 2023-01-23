@@ -13,7 +13,7 @@ class PersediaanAwalController extends Controller
     protected function kode($kondisi = 'baik')
     {
         $query = PersediaanAwal::query()
-            ->where('active_cash', session('ClosedCash'))
+            // ->where('active_cash', session('ClosedCash'))
             ->where('kondisi', $kondisi)
             ->latest('kode');
 
@@ -36,27 +36,29 @@ class PersediaanAwalController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'draft' => 'required|boolean',
-            'kondisi' => 'required',
-            'lokasi_id' => 'required',
-            'user_id' => 'required',
-            'total_barang' => 'required|numeric',
-            'total_nominal' => 'required|numeric',
-            'keterangan' => 'nullable'
-        ]);
-        $data['kode'] = $this->kode($data['kondisi']);
-        $data['active_cash'] = session('ClosedCash');
+
         \DB::beginTransaction();
         try {
+            $data = $request->validate([
+                'draft' => 'required|boolean',
+                'kondisi' => 'required',
+                'lokasi_id' => 'required',
+                'user_id' => 'required',
+                'total_barang' => 'required|numeric',
+                'total_nominal' => 'required|numeric',
+                'keterangan' => 'nullable',
+                'data_detail' => 'array'
+            ]);
+            $data['kode'] = $this->kode($data['kondisi']);
+            // $data['active_cash'] = session('ClosedCash');
             $persediaanAwal = PersediaanAwal::create($data);
             $persediaanAwalDetail = $persediaanAwal->persediaanAwalDetail();
             foreach ($data['data_detail'] as $row) {
                 // add persediaan
                 $persediaan = (new PersediaanRepository(
                     $row['produk_id'],
-                    $row['lokasi_id'],
-                    $row['kondisi'],
+                    $data['lokasi_id'],
+                    $data['kondisi'],
                     $row['jumlah'],
                     $row['batch'],
                     $row['expired'],
@@ -74,13 +76,13 @@ class PersediaanAwalController extends Controller
             \DB::commit();
             return response()->json([
                 'status' => true,
-                'data' => $persediaanAwal->refresh()
+                'data' => $persediaanAwal
             ], 200);
         } catch (\Exception $e){
             \DB::rollBack();
             return response()->json([
                 'status' => false,
-                'data' => $e
+                'data' => $e->getMessage()
             ], 403);
         }
     }

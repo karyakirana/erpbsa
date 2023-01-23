@@ -107,7 +107,7 @@ class ProdukController extends Controller
             'nama' => 'required|max:100',
             'tipe' => 'nullable',
             'merk' => 'required|max:50',
-            'satuan_jual' => 'required|max:20',
+            'satuan_jual' => 'required|string|max:20',
             'harga' => 'required|numeric',
             'max_diskon' => 'required|numeric',
             'buffer_stock' => 'required|numeric',
@@ -126,11 +126,13 @@ class ProdukController extends Controller
             if (count($request->produk_image) > 0){
                 $query->produkImage()->createMany($request->produk_image);
             }
+            \DB::commit();
             return response()->json([
                 'status' => true,
                 'data' => $query->refresh()
             ], 200);
         } catch (\Exception $e){
+            \DB::rollBack();
             return response()->json([
                 'status' => false,
                 'messages' => $e->getMessage()
