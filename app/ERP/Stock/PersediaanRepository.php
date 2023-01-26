@@ -42,7 +42,7 @@ class PersediaanRepository
     protected function create()
     {
         return Persediaan::create([
-            // 'active_cash' => $this->active_cash,
+            'active_cash' => $this->active_cash,
             'produk_id' => $this->produk_id,
             'lokasi_id' => $this->lokasi_id,
             'kondisi' => $this->kondisi,

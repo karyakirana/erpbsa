@@ -13,7 +13,7 @@ class PersediaanAwalController extends Controller
     protected function kode($kondisi = 'baik')
     {
         $query = PersediaanAwal::query()
-            // ->where('active_cash', session('ClosedCash'))
+            ->where('active_cash', session('ClosedCash'))
             ->where('kondisi', $kondisi)
             ->latest('kode');
 
@@ -42,6 +42,7 @@ class PersediaanAwalController extends Controller
             $data = $request->validate([
                 'draft' => 'required|boolean',
                 'kondisi' => 'required',
+                'tgl_persediaan_awal' => 'required',
                 'lokasi_id' => 'required',
                 'user_id' => 'required',
                 'total_barang' => 'required|numeric',
@@ -50,7 +51,7 @@ class PersediaanAwalController extends Controller
                 'data_detail' => 'array'
             ]);
             $data['kode'] = $this->kode($data['kondisi']);
-            // $data['active_cash'] = session('ClosedCash');
+            $data['active_cash'] = session('ClosedCash');
             $persediaanAwal = PersediaanAwal::create($data);
             $persediaanAwalDetail = $persediaanAwal->persediaanAwalDetail();
             foreach ($data['data_detail'] as $row) {
@@ -161,6 +162,7 @@ class PersediaanAwalController extends Controller
             'persediaan_awal_id' => 'required',
             'draft' => 'required|boolean',
             'kondisi' => 'required',
+            'tgl_persediaan_awal' => 'required',
             'lokasi_id' => 'required',
             'user_id' => 'required',
             'total_barang' => 'required|numeric',
