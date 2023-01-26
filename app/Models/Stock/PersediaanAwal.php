@@ -19,6 +19,7 @@ class PersediaanAwal extends Model
         'draft',
         'kondisi',
         'lokasi_id',
+        'tgl_persediaan_awal',
         'user_id',
         'total_barang',
         'total_nominal',
