@@ -130,14 +130,15 @@ class PersediaanAwalController extends Controller
     public function edit($persediaan_awal_id)
     {
         try {
-            $persediaanAwal = PersediaanAwal::find($persediaan_awal_id)
-                ->with([
+            $persediaanAwal = PersediaanAwal::
+                with([
                     'persediaanAwalDetail',
                     'users',
                     'lokasi',
                     'persediaanAwalDetail.persediaan',
                     'persediaanAwalDetail.persediaan.produk'
-                ]);
+                ])
+            ->find($persediaan_awal_id);
             return response()->json([
                 'status' => true,
                 'data' => $persediaanAwal
