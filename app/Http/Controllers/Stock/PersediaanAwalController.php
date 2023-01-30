@@ -13,7 +13,7 @@ class PersediaanAwalController extends Controller
     protected function kode($kondisi = 'baik')
     {
         $query = PersediaanAwal::query()
-            ->where('active_cash', session('ClosedCash'))
+            ->where('active_cash', get_closed_cash())
             ->where('kondisi', $kondisi)
             ->latest('kode');
 

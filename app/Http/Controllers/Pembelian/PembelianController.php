@@ -12,7 +12,7 @@ class PembelianController extends Controller
     public function kode()
     {
         $query = Pembelian::query()
-            ->where('active_cash', session('ClosedCash'))
+            ->where('active_cash', get_closed_cash())
             ->latest('kode');
 
         // check last num
@@ -81,7 +81,9 @@ class PembelianController extends Controller
             $pembelian = Pembelian::query()
                 ->with([
                     'users',
-                    'supplier'
+                    'supplier',
+                    'pembelianDetail',
+                    'pembelianDetail.produk'
                 ]);
             if (!is_null($request->search)){
                 $pembelian->where('active_cash', session('active_cash'))
@@ -112,7 +114,7 @@ class PembelianController extends Controller
     {
         try {
             $pembelian = Pembelian::with([
-                'users', 'supplier'
+                'users', 'supplier', 'pembelianDetail', 'pembelianDetail.produk'
             ])
                 ->find($pembelian_id);
             return response()->json([
@@ -196,7 +198,7 @@ class PembelianController extends Controller
             return response()->json([
                 'status' => false,
                 'messages' => $e->getMessage()
-            ], 403);
+            ]);
         }
     }
 }

@@ -54,3 +54,11 @@ if (!function_exists("set_closed_cash")){
 
     }
 }
+
+if(!function_exists("get_closed_cash")){
+    function get_closed_cash()
+    {
+        $data = ClosedCash::whereNull('closed')->latest()->first();
+        return $data->active;
+    }
+}

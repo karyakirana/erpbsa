@@ -4,6 +4,7 @@ namespace App\Models\Pembelian;
 
 use App\Models\Master\KodeTrait;
 use App\Models\Master\Supplier;
+use App\Models\Persediaan\StockMasuk;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -50,5 +51,10 @@ class Pembelian extends Model
     public function users()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function stockMasuk()
+    {
+        return $this->morphMany(StockMasuk::class, 'stockableMasuk', 'stockable_masuk_type', 'stockable_masuk_id');
     }
 }

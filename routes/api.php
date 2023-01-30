@@ -88,6 +88,14 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::put('persediaan/awal/', [\App\Http\Controllers\Stock\PersediaanAwalController::class, 'update']);
     Route::patch('persediaan/awal', [\App\Http\Controllers\Stock\PersediaanAwalController::class, 'show']);
     Route::delete('persediaan/awal/{id}', [\App\Http\Controllers\Stock\PersediaanAwalController::class, 'destroy']);
+
+    // stock masuk
+    Route::get('persediaan/masuk/pembelian/{id}', [\App\Http\Controllers\Stock\StockMasukPembelianController::class, 'edit']);
+    Route::post('persediaan/masuk/pembelian', [\App\Http\Controllers\Stock\StockMasukPembelianController::class, 'store']);
+    Route::patch('persediaan/masuk/pembelian', [\App\Http\Controllers\Stock\StockMasukPembelianController::class, 'show']);
+
+    // stock keluar
+
 });
 
 Route::middleware('auth:sanctum')->group(function (){

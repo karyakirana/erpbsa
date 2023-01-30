@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('persediaan_awal', function (Blueprint $table) {
-            $table->date('tgl_persediaan_awal')->after('lokasi_id');
+            $table->date('tgl_persediaan_awal')->after('lokasi_id')->nullable();
         });
     }
 
