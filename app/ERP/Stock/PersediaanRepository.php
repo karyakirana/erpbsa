@@ -35,7 +35,7 @@ class PersediaanRepository
         $this->jumlah = $jumlah;
         $this->field = $field;
         if (is_null($active_cash)){
-            $this->active_cash = session('ClosedCash');
+            $this->active_cash = set_closed_cash(auth()->id());
         }
     }
 

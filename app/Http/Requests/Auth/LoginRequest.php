@@ -5,6 +5,7 @@ namespace App\Http\Requests\Auth;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
@@ -86,6 +87,10 @@ class LoginRequest extends FormRequest
 
     public function failedValidation(Validator $validator)
     {
-        json_response_validation($validator);
+        throw new HttpResponseException(response()->json([
+            'status'   => false,
+            'message'   => 'Validation errors',
+            'errors'      => $validator->errors()
+        ], 422));
     }
 }

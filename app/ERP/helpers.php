@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\ClosedCash;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\ValidationException;
@@ -32,5 +33,24 @@ if (!function_exists('json_response_validation')){
             'message' => "validation error",
             'data' => $validator->errors()
         ]), 422);
+    }
+}
+
+if (!function_exists("set_closed_cash")){
+    function set_closed_cash($idUser)
+    {
+        $data = ClosedCash::whereNull('closed')->latest()->first();
+        if ($data) {
+            // jika null maka buat data
+            return $data->active;
+        }
+        $generateClosedCash = md5(now());
+        $isi = [
+            'active' => $generateClosedCash,
+            'user_id' => $idUser,
+        ];
+        $createData = ClosedCash::create($isi);
+        return $generateClosedCash;
+
     }
 }

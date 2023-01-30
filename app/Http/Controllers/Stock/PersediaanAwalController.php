@@ -44,14 +44,14 @@ class PersediaanAwalController extends Controller
                 'kondisi' => 'required',
                 'tgl_persediaan_awal' => 'required',
                 'lokasi_id' => 'required',
-                'user_id' => 'required',
                 'total_barang' => 'required|numeric',
                 'total_nominal' => 'required|numeric',
                 'keterangan' => 'nullable',
                 'data_detail' => 'array'
             ]);
             $data['kode'] = $this->kode($data['kondisi']);
-            $data['active_cash'] = session('ClosedCash');
+            $data['active_cash'] = set_closed_cash(auth()->id());
+            $data['user_id'] = auth()->id();
             $persediaanAwal = PersediaanAwal::create($data);
             $persediaanAwalDetail = $persediaanAwal->persediaanAwalDetail();
             foreach ($data['data_detail'] as $row) {
@@ -83,8 +83,9 @@ class PersediaanAwalController extends Controller
             \DB::rollBack();
             return response()->json([
                 'status' => false,
-                'data' => $e->getMessage()
-            ], 403);
+                'data' => $e->getMessage(),
+                'ClosedCash' => set_closed_cash(auth()->id())
+            ]);
         }
     }
 

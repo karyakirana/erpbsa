@@ -15,6 +15,11 @@ class PenjualanController extends Controller
             ->where('active_cash', session('ClosedCash'))
             ->latest('kode');
 
+        // check last num
+        if ($query->doesntExist()) {
+            return '0001/PJ/'. date('Y');
+        }
+
         $num = (int) $query->first()->last_num_trans + 1;
         return sprintf("%04s", $num)."/PJ/".date('Y');
     }
@@ -27,9 +32,26 @@ class PenjualanController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate([]);
+        $data = $request->validate([
+            'penjualan_penawaran_id' => 'nullable',
+            'draft' => 'boolean',
+            'status' => 'required',
+            'tipe_penjualan' => 'required',
+            'tgl_penjualan' => 'required',
+            'tempo' => 'nullable',
+            'tgl_tempo' => 'nullable',
+            'customer_id' => 'required',
+            'sales_id' => 'required',
+            'total_barang' => 'required',
+            'ppn' => 'nullable',
+            'biaya_lain' => 'nullable',
+            'total_bayar' => 'required',
+            'keterangan' => 'nullable',
+            'data_detail' => 'required|array'
+        ]);
         $data['kode'] = $this->kode();
-        $data['active_cash'] = session('ClosedCash');
+        $data['active_cash'] = set_closed_cash(\Auth::id());
+        $data['user_id'] = \Auth::id();
         \DB::beginTransaction();
         try {
             $penjualan = Penjualan::create($data);
@@ -44,7 +66,7 @@ class PenjualanController extends Controller
             return response()->json([
                 'status' => false,
                 'messages' => $e->getMessage()
-            ], 403);
+            ]);
         }
     }
 
@@ -113,7 +135,24 @@ class PenjualanController extends Controller
      */
     public function update(Request $request)
     {
-        $data = $request->validate([]);
+        $data = $request->validate([
+            'penjualan_id' => 'nullable',
+            'penjualan_penawaran_id' => 'nullable',
+            'draft' => 'boolean',
+            'status' => 'required',
+            'tipe_penjualan' => 'required',
+            'tgl_penjualan' => 'required',
+            'tempo' => 'nullable',
+            'tgl_tempo' => 'nullable',
+            'customer_id' => 'required',
+            'sales_id' => 'required',
+            'total_barang' => 'required',
+            'ppn' => 'nullable',
+            'biaya_lain' => 'nullable',
+            'total_bayar' => 'required',
+            'keterangan' => 'nullable',
+            'data_detail' => 'required|array'
+        ]);
         \DB::beginTransaction();
         try {
             $penjualan = Penjualan::find($request['penjualan_id']);

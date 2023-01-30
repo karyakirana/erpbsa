@@ -15,6 +15,11 @@ class PembelianController extends Controller
             ->where('active_cash', session('ClosedCash'))
             ->latest('kode');
 
+        // check last num
+        if ($query->doesntExist()) {
+            return '0001/PB/'. date('Y');
+        }
+
         $num = (int) $query->first()->last_num_trans + 1;
         return sprintf("%04s", $num)."/PB/".date('Y');
     }
@@ -27,8 +32,25 @@ class PembelianController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate([]);
+        $data = $request->validate([
+            'pembelian_po_id' => 'nullable',
+            'draft'=>'required|boolean',
+            'tipe_pembelian' => 'required',
+            'tgl_pembelian' => 'required',
+            'tempo' => 'nullable',
+            'tgl_tempo' => 'nullable',
+            'supplier_id' => 'required',
+            'total_barang' => 'required',
+            'ppn' => 'nullable',
+            'biaya_lain' => 'nullable',
+            'total_bayar' => 'required',
+            'keterangan' => 'nullable',
+            'data_detail' => 'required|array',
+        ]);
         $data['kode'] = $this->kode();
+        $data['active_cash'] = set_closed_cash(auth()->id());
+        $data['user_id'] = auth()->id();
+        $data['status'] = "Belum Bayar";
         \DB::beginTransaction();
         try {
             $pembelian = Pembelian::create($data);
@@ -37,13 +59,13 @@ class PembelianController extends Controller
             return response()->json([
                 'status' => true,
                 'data' => $pembelian->refresh()
-            ], 200);
+            ]);
         } catch (\Exception $e){
             \DB::rollBack();
             return response()->json([
                 'status'=>false,
                 'messages' => $e->getMessage()
-            ], 403);
+            ]);
         }
     }
 
@@ -57,7 +79,10 @@ class PembelianController extends Controller
     {
         try {
             $pembelian = Pembelian::query()
-                ->with([]);
+                ->with([
+                    'users',
+                    'supplier'
+                ]);
             if (!is_null($request->search)){
                 $pembelian->where('active_cash', session('active_cash'))
                     ->orWhereRelation('supplier', 'nama', 'like', '%'.$request->search.'%')
@@ -73,7 +98,7 @@ class PembelianController extends Controller
             return response()->json([
                 'status' => false,
                 'messages' => $e->getMessage()
-            ], 403);
+            ]);
         }
     }
 
@@ -86,11 +111,10 @@ class PembelianController extends Controller
     public function edit($pembelian_id)
     {
         try {
-            $pembelian = Pembelian::find($pembelian_id)
-                ->with([
-                    'supplier',
-                    'users'
-                ]);
+            $pembelian = Pembelian::with([
+                'users', 'supplier'
+            ])
+                ->find($pembelian_id);
             return response()->json([
                 'status' => true,
                 'data' => $pembelian
@@ -99,7 +123,7 @@ class PembelianController extends Controller
             return response()->json([
                 'status' => false,
                 'messages' => $e->getMessage()
-            ], 403);
+            ]);
         }
     }
 
@@ -111,7 +135,23 @@ class PembelianController extends Controller
      */
     public function update(Request $request)
     {
-        $data = $request->validate([]);
+        $data = $request->validate([
+            'pembelian_id' => 'required',
+            'pembelian_po_id' => 'nullable',
+            'draft'=>'required|boolean',
+            'tipe_pembelian' => 'required',
+            'tgl_pembelian' => 'required',
+            'tempo' => 'nullable',
+            'tgl_tempo' => 'nullable',
+            'supplier_id' => 'required',
+            'total_barang' => 'required',
+            'ppn' => 'nullable',
+            'biaya_lain' => 'nullable',
+            'total_bayar' => 'required',
+            'keterangan' => 'nullable',
+            'data_detail' => 'required|array',
+        ]);
+        $data['user_id'] = auth()->id();
         \DB::beginTransaction();
         try {
             $pembelian = Pembelian::find($request['pembelian_id']);
@@ -130,7 +170,7 @@ class PembelianController extends Controller
             return response()->json([
                 'status'=>false,
                 'messages' => $e->getMessage()
-            ], 403);
+            ]);
         }
     }
 
