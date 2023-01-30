@@ -33,6 +33,6 @@ class Persediaan extends Model
 
     public function lokasi()
     {
-        return $this->belongsTo(Lokasi::class, 'id');
+        return $this->belongsTo(Lokasi::class, 'lokasi_id');
     }
 }

@@ -11,8 +11,8 @@ class PersediaanController extends Controller
     public function getData()
     {
         try {
-            $persediaan = Persediaan::with(['produk'])
-                ->where('active_cash', session('ClosedCash'))
+            $persediaan = Persediaan::with(['produk', 'lokasi'])
+                ->where('active_cash', get_closed_cash())
                 ->get();
             return response()->json([
                 'status' => true,

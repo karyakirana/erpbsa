@@ -81,7 +81,7 @@ Route::middleware('auth:sanctum')->group(function (){
 
 Route::middleware('auth:sanctum')->group(function (){
     // persediaan
-    Route::get('persediaan', [\App\Http\Controllers\Stock\PersediaanController::class, 'getData']);
+    Route::patch('persediaan', [\App\Http\Controllers\Stock\PersediaanController::class, 'getData']);
     // persediaan awal
     Route::get('persediaan/awal/{persediaan_awal_id}', [\App\Http\Controllers\Stock\PersediaanAwalController::class, 'edit']);
     Route::post('persediaan/awal/', [\App\Http\Controllers\Stock\PersediaanAwalController::class, 'store']);
