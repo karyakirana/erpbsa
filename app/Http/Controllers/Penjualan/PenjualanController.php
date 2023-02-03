@@ -80,7 +80,15 @@ class PenjualanController extends Controller
     {
         try {
             $penjualan = Penjualan::query()
-                ->with([]);
+                ->with([
+                    'customer',
+                    'users',
+                    'sales',
+                    'penjualanDetail',
+                    'penjualanDetail.persediaan',
+                    'penjualanDetail.persediaan.produk',
+                    'penjualanDetail.persediaan.lokasi',
+                ]);
             if (!is_null($request->search)){
                 $penjualan->where('active_cash', session('active_cash'))
                     ->orWhereRelation('customer', 'nama', 'like', '%'.$request->search.'%')

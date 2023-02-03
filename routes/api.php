@@ -115,6 +115,7 @@ Route::middleware('auth:sanctum')->group(function (){
 
 Route::middleware('auth:sanctum')->group(function (){
     // penjualan
+    Route::get('penjualan', [\App\Http\Controllers\Penjualan\PenjualanController::class, 'show']);
     Route::get('penjualan/{penjualan_id}', [\App\Http\Controllers\Penjualan\PenjualanController::class, 'edit']);
     Route::post('penjualan/', [\App\Http\Controllers\Penjualan\PenjualanController::class, 'store']);
     Route::put('penjualan/', [\App\Http\Controllers\Penjualan\PenjualanController::class, 'update']);
