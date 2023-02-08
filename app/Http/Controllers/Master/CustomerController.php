@@ -26,7 +26,7 @@ class CustomerController extends Controller
             'jenis_instansi' => 'required|max:20',
             'nama' => 'required|max:50',
             'telepon' => 'required|max:20',
-            'email' => 'required|email|max:20',
+            'email' => 'nullable|email',
             'npwp' => 'nullable|max:20',
             'alamat' => 'required',
             'kota_id' => 'required',
@@ -45,7 +45,7 @@ class CustomerController extends Controller
             return response()->json([
                 'status' => false,
                 'messages' => $e->getMessage()
-            ], 403);
+            ]);
         }
     }
 

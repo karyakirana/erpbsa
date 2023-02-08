@@ -36,7 +36,7 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::get('master/jabatan/{jabatan_id}', [\App\Http\Controllers\Master\JabatanController::class, 'edit']);
     Route::post('master/jabatan/', [\App\Http\Controllers\Master\JabatanController::class, 'store']);
     Route::put('master/jabatan/', [\App\Http\Controllers\Master\JabatanController::class, 'update']);
-    Route::patch('master/jabatan', [\App\Http\Controllers\Master\JabatanController::class, 'getData']);
+    Route::get('master/jabatan', [\App\Http\Controllers\Master\JabatanController::class, 'getData']);
     Route::delete('master/jabatan/{id}', [\App\Http\Controllers\Master\JabatanController::class, 'destroy']);
     // pegawai
     Route::get('master/pegawai/{pegawai_id}', [\App\Http\Controllers\Master\PegawaiController::class, 'edit']);
@@ -49,19 +49,19 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::get('master/lokasi/{lokasi_id}', [\App\Http\Controllers\Master\LokasiController::class, 'edit']);
     Route::post('master/lokasi/', [\App\Http\Controllers\Master\LokasiController::class, 'store']);
     Route::put('master/lokasi/', [\App\Http\Controllers\Master\LokasiController::class, 'update']);
-    Route::patch('master/lokasi', [\App\Http\Controllers\Master\LokasiController::class, 'getData']);
+    Route::get('master/lokasi', [\App\Http\Controllers\Master\LokasiController::class, 'getData']);
     Route::delete('master/lokasi/{id}', [\App\Http\Controllers\Master\LokasiController::class, 'destroy']);
     // supplier
     Route::get('master/supplier/{supplier_id}', [\App\Http\Controllers\Master\SupplierController::class, 'edit']);
     Route::post('master/supplier/', [\App\Http\Controllers\Master\SupplierController::class, 'store']);
     Route::put('master/supplier/', [\App\Http\Controllers\Master\SupplierController::class, 'update']);
-    Route::patch('master/supplier', [\App\Http\Controllers\Master\SupplierController::class, 'view']);
+    Route::get('master/supplier', [\App\Http\Controllers\Master\SupplierController::class, 'view']);
     Route::delete('master/supplier/{id}', [\App\Http\Controllers\Master\SupplierController::class, 'destroy']);
     // customer
     Route::get('master/customer/{customer_id}', [\App\Http\Controllers\Master\CustomerController::class, 'edit']);
     Route::post('master/customer/', [\App\Http\Controllers\Master\CustomerController::class, 'store']);
     Route::put('master/customer/', [\App\Http\Controllers\Master\CustomerController::class, 'update']);
-    Route::patch('master/customer', [\App\Http\Controllers\Master\CustomerController::class, 'view']);
+    Route::get('master/customer', [\App\Http\Controllers\Master\CustomerController::class, 'view']);
     Route::delete('master/customer/{id}', [\App\Http\Controllers\Master\CustomerController::class, 'destroy']);
     // produk kategori
     Route::get('master/produkkategori/{produk_kategori_id}', [\App\Http\Controllers\Master\ProdukKategoriController::class, 'edit']);
@@ -73,21 +73,21 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::get('master/produk/{produk_id}', [\App\Http\Controllers\Master\ProdukController::class, 'edit']);
     Route::post('master/produk/', [\App\Http\Controllers\Master\ProdukController::class, 'store']);
     Route::put('master/produk/', [\App\Http\Controllers\Master\ProdukController::class, 'update']);
-    Route::patch('master/produk', [\App\Http\Controllers\Master\ProdukController::class, 'view']);
+    Route::get('master/produk', [\App\Http\Controllers\Master\ProdukController::class, 'view']);
     Route::delete('master/produk/{id}', [\App\Http\Controllers\Master\ProdukController::class, 'destroy']);
     // kota indonesia
     Route::get('master/kota/{id}', [\App\Http\Controllers\Master\WilayahIndonesiaController::class, 'kotaIndonesia']);
-    Route::patch('master/kota/', [\App\Http\Controllers\Master\WilayahIndonesiaController::class, 'kotaIndonesia']);
+    Route::get('master/kota/', [\App\Http\Controllers\Master\WilayahIndonesiaController::class, 'kotaIndonesia']);
 });
 
 Route::middleware('auth:sanctum')->group(function (){
     // persediaan
-    Route::patch('persediaan', [\App\Http\Controllers\Stock\PersediaanController::class, 'getData']);
+    Route::get('persediaan', [\App\Http\Controllers\Stock\PersediaanController::class, 'getData']);
     // persediaan awal
     Route::get('persediaan/awal/{persediaan_awal_id}', [\App\Http\Controllers\Stock\PersediaanAwalController::class, 'edit']);
     Route::post('persediaan/awal/', [\App\Http\Controllers\Stock\PersediaanAwalController::class, 'store']);
     Route::put('persediaan/awal/', [\App\Http\Controllers\Stock\PersediaanAwalController::class, 'update']);
-    Route::patch('persediaan/awal', [\App\Http\Controllers\Stock\PersediaanAwalController::class, 'show']);
+    Route::get('persediaan/awal', [\App\Http\Controllers\Stock\PersediaanAwalController::class, 'show']);
     Route::delete('persediaan/awal/{id}', [\App\Http\Controllers\Stock\PersediaanAwalController::class, 'destroy']);
 
     // stock masuk
@@ -104,13 +104,13 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::get('pembelian/purchaseorder/{pemmbelian_po_id}', [\App\Http\Controllers\Pembelian\PembelianPOController::class, 'edit']);
     Route::post('pembelian/purchaseorder/', [\App\Http\Controllers\Pembelian\PembelianPOController::class, 'store']);
     Route::put('pembelian/purchaseorder/', [\App\Http\Controllers\Pembelian\PembelianPOController::class, 'update']);
-    Route::patch('pembelian/purchaseorder', [\App\Http\Controllers\Pembelian\PembelianPOController::class, 'show']);
+    Route::get('pembelian/purchaseorder', [\App\Http\Controllers\Pembelian\PembelianPOController::class, 'show']);
     Route::delete('pembelian/purchaseorder/{id}', [\App\Http\Controllers\Pembelian\PembelianPOController::class, 'destroy']);
     // pembelian
     Route::get('pembelian/{pemmbelian_id}', [\App\Http\Controllers\Pembelian\PembelianController::class, 'edit']);
     Route::post('pembelian/', [\App\Http\Controllers\Pembelian\PembelianController::class, 'store']);
     Route::put('pembelian/', [\App\Http\Controllers\Pembelian\PembelianController::class, 'update']);
-    Route::patch('pembelian/', [\App\Http\Controllers\Pembelian\PembelianController::class, 'show']);
+    Route::get('pembelian/', [\App\Http\Controllers\Pembelian\PembelianController::class, 'show']);
     Route::delete('pembelian/{id}', [\App\Http\Controllers\Pembelian\PembelianController::class, 'destroy']);
 });
 

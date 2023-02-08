@@ -11,6 +11,7 @@ class PersediaanRepository
     protected $kondisi;
     protected $batch;
     protected $expired;
+    protected $serial_number;
     protected $harga_beli;
     protected $field;
 
@@ -21,6 +22,7 @@ class PersediaanRepository
         $jumlah,
         $batch,
         $expired,
+        $serial_number,
         $harga_beli,
         $field,
         $active_cash = null
@@ -30,6 +32,7 @@ class PersediaanRepository
         $this->lokasi_id = $lokasi_id;
         $this->kondisi = $kondisi;
         $this->batch = $batch;
+        $this->serial_number = $serial_number;
         $this->expired = $expired;
         $this->harga_beli = $harga_beli;
         $this->jumlah = $jumlah;
@@ -47,6 +50,7 @@ class PersediaanRepository
             'lokasi_id' => $this->lokasi_id,
             'kondisi' => $this->kondisi,
             'batch' => $this->batch,
+            'serial_number' => $this->serial_number,
             'expired' => $this->expired,
             'harga_beli' => $this->harga_beli,
             $this->field => $this->jumlah,
@@ -68,6 +72,10 @@ class PersediaanRepository
 
         if (!is_null($this->expired)){
             $query = $query->where('expired', $this->expired);
+        }
+
+        if (!is_null($this->serial_number)){
+            $query = $query->where('serial_number', $this->serial_number);
         }
 
         return $query;

@@ -18,6 +18,7 @@ class Persediaan extends Model
         'kondisi',
         'batch',
         'expired',
+        'serial_number',
         'harga_beli',
         'stock_awal',
         'stock_masuk',

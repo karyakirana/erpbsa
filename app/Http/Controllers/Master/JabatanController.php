@@ -31,12 +31,12 @@ class JabatanController extends Controller
             return response()->json([
                 'status' => true,
                 'data' => $query->get()
-            ], 200);
+            ]);
         } catch (\Exception $e){
             return response()->json([
                 'status' => false,
                 'messages' => $e->getMessage()
-            ], 403);
+            ]);
         }
     }
 
@@ -47,12 +47,12 @@ class JabatanController extends Controller
             return response()->json([
                 'status' => true,
                 'data' => $jabatan
-            ], 200);
+            ]);
         } catch (\Exception $e){
             return response()->json([
                 'status' => false,
                 'messages' => $e->getMessage()
-            ], 403);
+            ]);
         }
     }
 
@@ -73,7 +73,7 @@ class JabatanController extends Controller
             return response()->json([
                 'status' => false,
                 'messages' => $e->getMessage()
-            ], 403);
+            ]);
         }
     }
 

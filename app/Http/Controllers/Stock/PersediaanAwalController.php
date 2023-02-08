@@ -105,7 +105,7 @@ class PersediaanAwalController extends Controller
                     'persediaanAwalDetail.persediaan.produk'
                 ]);
             if (!is_null($request->search)){
-                $persediaanAwal->where('active_cash', session('active_cash'))
+                $persediaanAwal->where('active_cash', get_closed_cash())
                     ->orWhereRelation('lokasi', 'nama', 'like', '%'.$request->search.'%')
                     ->orWhereRelation('users', 'name', 'like', '%'.$request->search.'%')
                     ->orWhere('keterangan', 'like', '%'.$request->search.'%');
@@ -113,12 +113,12 @@ class PersediaanAwalController extends Controller
             return response()->json([
                 'status' => true,
                 'data' => $persediaanAwal->get()
-            ], 200);
+            ]);
         } catch (\Exception $e){
             return response()->json([
                 'status' => false,
                 'messages' => $e->getMessage()
-            ], 403);
+            ]);
         }
     }
 
