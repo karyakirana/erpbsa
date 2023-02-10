@@ -39,10 +39,10 @@ class ProdukController extends Controller
         \DB::beginTransaction();
         try {
             $produk = Produk::create($data);
-            if (count($request->produk_kemasan) > 0){
+            if (!is_null($request->produk_kemasan) ){
                 $produk->produkKemasan()->createMany($request->produk_kemasan);
             }
-            if (count($request->produk_image) > 0){
+            if (!is_null($request->produk_image)){
                 $produk->produkImage()->createMany($request->produk_image);
             }
             \DB::commit();

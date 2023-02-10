@@ -67,7 +67,7 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::get('master/produkkategori/{produk_kategori_id}', [\App\Http\Controllers\Master\ProdukKategoriController::class, 'edit']);
     Route::post('master/produkkategori/', [\App\Http\Controllers\Master\ProdukKategoriController::class, 'store']);
     Route::put('master/produkkategori/', [\App\Http\Controllers\Master\ProdukKategoriController::class, 'update']);
-    Route::patch('master/produkkategori', [\App\Http\Controllers\Master\ProdukKategoriController::class, 'view']);
+    Route::get('master/produkkategori', [\App\Http\Controllers\Master\ProdukKategoriController::class, 'view']);
     Route::delete('master/produkkategori/{id}', [\App\Http\Controllers\Master\ProdukKategoriController::class, 'destroy']);
     // produk
     Route::get('master/produk/{produk_id}', [\App\Http\Controllers\Master\ProdukController::class, 'edit']);
