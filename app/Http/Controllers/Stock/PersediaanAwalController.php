@@ -40,7 +40,6 @@ class PersediaanAwalController extends Controller
         \DB::beginTransaction();
         try {
             $data = $request->validate([
-                'draft' => 'required|boolean',
                 'kondisi' => 'required',
                 'tgl_persediaan_awal' => 'required',
                 'lokasi_id' => 'required',
@@ -51,6 +50,7 @@ class PersediaanAwalController extends Controller
             ]);
             $data['kode'] = $this->kode($data['kondisi']);
             $data['active_cash'] = set_closed_cash(auth()->id());
+            $data['draft'] = false;
             $data['user_id'] = auth()->id();
             $persediaanAwal = PersediaanAwal::create($data);
             $persediaanAwalDetail = $persediaanAwal->persediaanAwalDetail();
@@ -63,6 +63,7 @@ class PersediaanAwalController extends Controller
                     $row['jumlah'],
                     $row['batch'],
                     $row['expired'],
+                    $row['serial_number'],
                     $row['harga_beli'],
                     'stock_awal'
                 ))->addStockMasuk();
@@ -162,7 +163,6 @@ class PersediaanAwalController extends Controller
     {
         $data = $request->validate([
             'persediaan_awal_id' => 'required',
-            'draft' => 'required|boolean',
             'kondisi' => 'required',
             'tgl_persediaan_awal' => 'required',
             'lokasi_id' => 'required',
@@ -171,6 +171,7 @@ class PersediaanAwalController extends Controller
             'total_nominal' => 'required|numeric',
             'keterangan' => 'nullable'
         ]);
+        $data['draft'] = false;
         \DB::beginTransaction();
         try {
             $persediaanAwal = PersediaanAwal::find($data['persediaan_awal_id']);
@@ -191,6 +192,7 @@ class PersediaanAwalController extends Controller
                     $row['jumlah'],
                     $row['batch'],
                     $row['expired'],
+                    $row['serial_number'],
                     $row['harga_beli'],
                     'stock_awal'
                 ))->addStockMasuk();

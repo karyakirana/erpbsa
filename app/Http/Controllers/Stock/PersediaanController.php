@@ -25,4 +25,21 @@ class PersediaanController extends Controller
             ]);
         }
     }
+
+    public function edit($id)
+    {
+        try {
+            $persediaan = Persediaan::with(['produk', 'lokasi'])
+                ->find($id);
+            return response()->json([
+                'status' => true,
+                'data' => $persediaan
+            ], 200);
+        } catch (\Exception $e){
+            return response()->json([
+                'status' => false,
+                'messages' => $e->getMessage()
+            ]);
+        }
+    }
 }

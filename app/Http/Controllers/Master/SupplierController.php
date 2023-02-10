@@ -37,12 +37,12 @@ class SupplierController extends Controller
             return response()->json([
                 'status' => true,
                 'data' => $query
-            ], 200);
+            ]);
         } catch (\Exception $e){
             return response()->json([
                 'status' => false,
                 'messages' => $e->getMessage()
-            ], 403);
+            ]);
         }
     }
 
@@ -101,12 +101,12 @@ class SupplierController extends Controller
             return response()->json([
                 'status' => true,
                 'data' => $query
-            ], 200);
+            ]);
         } catch (\Exception $e){
             return response()->json([
                 'status' => false,
                 'messages' => $e->getMessage()
-            ], 403);
+            ]);
         }
     }
 
