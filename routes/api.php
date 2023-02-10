@@ -97,7 +97,11 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::patch('persediaan/masuk/pembelian', [\App\Http\Controllers\Stock\StockMasukPembelianController::class, 'show']);
 
     // stock keluar
-
+    Route::get('persediaan/keluar/penjualan/{id}', [\App\Http\Controllers\Stock\StockKeluarPenjualanController::class, 'edit']);
+    Route::get('persediaan/keluar/penjualan', [\App\Http\Controllers\Stock\StockKeluarPenjualanController::class, 'index']);
+    Route::post('persediaan/keluar/penjualan', [\App\Http\Controllers\Stock\StockKeluarPenjualanController::class, 'store']);
+    Route::put('persediaan/keluar/penjualan', [\App\Http\Controllers\Stock\StockKeluarPenjualanController::class, 'update']);
+    Route::delete('persediaan/keluar/penjualan/{id}', [\App\Http\Controllers\Stock\StockKeluarPenjualanController::class, 'destroy']);
 });
 
 Route::middleware('auth:sanctum')->group(function (){

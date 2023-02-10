@@ -21,7 +21,7 @@ class StockMasukPembelianController extends Controller
                 'status' => true,
                 'data' => $data
             ], 200);
-        } catch (\Exception$e){
+        } catch (\Exception $e){
             return response()->json([
                 'status'=>false,
                 'messages' => $e->getMessage()
@@ -70,7 +70,7 @@ class StockMasukPembelianController extends Controller
                     'stock_masuk'
                 ))->addStockMasuk();
                 // create persediaan detail
-                $stockmasuk->create([
+                $stockmasuk->stockMasukDetail()->create([
                     'persediaan_id' => $persediaan->id,
                     'harga_beli' => $row['harga_beli'],
                     'jumlah' => $row['jumlah'],
@@ -82,7 +82,7 @@ class StockMasukPembelianController extends Controller
             return response()->json([
                 'status' => true,
                 'data' => $stockmasuk->refresh()
-            ], 200);
+            ]);
         } catch (\Exception $e){
             \DB::rollBack();
             return response()->json([

@@ -107,6 +107,15 @@ class PersediaanRepository
         return $this->create();
     }
 
+    public static function addStaticStockKeluar($persediaan_id, $jumlah, $field)
+    {
+        return Persediaan::find($persediaan_id)
+            ->update([
+                $field => \DB::raw($field." - ".$jumlah),
+                'stock_saldo' => \DB::raw("stock_saldo - ".$jumlah)
+            ]);
+    }
+
     public static function rollbackStockMasuk($persediaan_id, $jumlah, $field)
     {
         return Persediaan::find($persediaan_id)

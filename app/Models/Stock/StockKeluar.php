@@ -3,6 +3,7 @@
 namespace App\Models\Stock;
 
 use App\Models\Master\Customer;
+use App\Models\Master\KodeTrait;
 use App\Models\Master\Lokasi;
 use App\Models\Master\Supplier;
 use App\Models\User;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class StockKeluar extends Model
 {
-    use HasFactory;
+    use HasFactory, KodeTrait;
     protected $table = 'stock_keluar';
     protected $fillable = [
         'active_cash',
