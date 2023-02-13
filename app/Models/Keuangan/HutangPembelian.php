@@ -16,6 +16,7 @@ class HutangPembelian extends Model
         'status',
         'tgl_hutang',
         'tgl_pelunasan',
+        'kurang_bayar',
         'keterangan'
     ];
 

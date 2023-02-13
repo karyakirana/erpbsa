@@ -2,6 +2,7 @@
 
 namespace App\Models\Pembelian;
 
+use App\Models\Keuangan\HutangPembelian;
 use App\Models\Master\KodeTrait;
 use App\Models\Master\Supplier;
 use App\Models\Persediaan\StockMasuk;
@@ -56,5 +57,10 @@ class Pembelian extends Model
     public function stockMasuk()
     {
         return $this->morphMany(StockMasuk::class, 'stockableMasuk', 'stockable_masuk_type', 'stockable_masuk_id');
+    }
+
+    public function hutangPembelian()
+    {
+        return $this->morphOne(HutangPembelian::class, 'hutangablePembelian', 'hutangable_pembelian_type', 'hutangable_pembelian_id');
     }
 }

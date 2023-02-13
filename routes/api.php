@@ -132,4 +132,25 @@ Route::middleware('auth:sanctum')->group(function (){
 // keuangan
 Route::middleware('auth:sanctum')->group(function (){
     // akuntansi route
+
+    // master akun route
+    Route::get('akun', [\App\Http\Controllers\Akuntansi\AkunController::class, 'index']);
+    Route::get('akun/{akun_id}/edit', [\App\Http\Controllers\Akuntansi\AkunController::class, 'edit']);
+    Route::post('akun', [\App\Http\Controllers\Akuntansi\AkunController::class, 'store']);
+    Route::put('akun', [\App\Http\Controllers\Akuntansi\AkunController::class, 'update']);
+    Route::delete('akun/{akun_id}/destroy', [\App\Http\Controllers\Akuntansi\AkunController::class, 'edit']);
+    // master akun kategori
+    Route::get('akun/kategori', [\App\Http\Controllers\Akuntansi\AkunKategoriController::class, 'index']);
+    Route::get('akun/kategori/{akun_kategori_id}/edit', [\App\Http\Controllers\Akuntansi\AkunKategoriController::class, 'edit']);
+    Route::post('akun/kategori', [\App\Http\Controllers\Akuntansi\AkunKategoriController::class, 'store']);
+    Route::put('akun/kategori', [\App\Http\Controllers\Akuntansi\AkunKategoriController::class, 'update']);
+    Route::delete('akun/kategori/{akun_kategori_id}/edit', [\App\Http\Controllers\Akuntansi\AkunKategoriController::class, 'destroy']);
+    // master akun tipe
+    Route::get('akun/tipe', [\App\Http\Controllers\Akuntansi\AkunTipeController::class, 'index']);
+    Route::get('akun/tipe/{akun_tipe_id}/edit', [\App\Http\Controllers\Akuntansi\AkunTipeController::class, 'edit']);
+    Route::post('akun/tipe', [\App\Http\Controllers\Akuntansi\AkunTipeController::class, 'store']);
+    Route::put('akun/tipe', [\App\Http\Controllers\Akuntansi\AkunTipeController::class, 'update']);
+    Route::delete('akun/tipe/{akun_tipe_id}/edit', [\App\Http\Controllers\Akuntansi\AkunTipeController::class, 'destroy']);
+
+    // coa config
 });
