@@ -128,3 +128,8 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::patch('penjualan/', [\App\Http\Controllers\Penjualan\PenjualanController::class, 'show']);
     Route::delete('penjualan/{penjualan_id}', [\App\Http\Controllers\Penjualan\PenjualanController::class, 'destroy']);
 });
+
+// keuangan
+Route::middleware('auth:sanctum')->group(function (){
+    // akuntansi route
+});
