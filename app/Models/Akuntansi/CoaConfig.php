@@ -12,7 +12,7 @@ class CoaConfig extends Model
     protected $primaryKey = 'config';
     protected $keyType = 'string';
     protected $fillable = [
-        'config', 'kategori', 'akun_id', 'keterangan'
+        'config', 'kategori', 'akun_id', 'default_field','keterangan'
     ];
 
     public function akun()

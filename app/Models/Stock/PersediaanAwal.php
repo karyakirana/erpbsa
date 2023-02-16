@@ -2,6 +2,7 @@
 
 namespace App\Models\Stock;
 
+use App\Models\Keuangan\JurnalTransaksi;
 use App\Models\Master\KodeTrait;
 use App\Models\Master\Lokasi;
 use App\Models\User;
@@ -39,5 +40,10 @@ class PersediaanAwal extends Model
     public function users()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function jurnal()
+    {
+        return $this->morphMany(JurnalTransaksi::class, 'jurnalableTransaksi', 'jurnalable_transaksi_type', 'jurnalable_transaksi_id');
     }
 }

@@ -13,6 +13,7 @@ class AkunTipe extends Model
         'akun_kategori_id',
         'kode',
         'nama',
+        'default_field',
         'keterangan'
     ];
 
