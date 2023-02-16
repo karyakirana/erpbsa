@@ -2,6 +2,7 @@
 
 namespace App\Models\Penjualan;
 
+use App\Models\Keuangan\PiutangPenjualan;
 use App\Models\Master\Customer;
 use App\Models\Master\KodeTrait;
 use App\Models\Master\Pegawai;
@@ -52,5 +53,10 @@ class Penjualan extends Model
     public function sales()
     {
         return $this->belongsTo(Pegawai::class, 'sales_id');
+    }
+
+    public function piutangPenjualan()
+    {
+        return $this->morphOne(PiutangPenjualan::class, 'piutangablePenjualan', 'piutangable_penjualan_type', 'piutangable_penjualan_id');
     }
 }

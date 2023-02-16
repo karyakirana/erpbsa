@@ -16,6 +16,7 @@ class PiutangPenjualan extends Model
         'status',
         'tgl_piutang',
         'tgl_pelunasan',
+        'kurang_bayar',
         'keterangan'
     ];
 
