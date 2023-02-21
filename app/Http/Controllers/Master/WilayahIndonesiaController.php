@@ -20,7 +20,7 @@ class WilayahIndonesiaController extends Controller
             return response()->json([
                 'status' => false,
                 'messages' => $e->getMessage()
-            ], 403);
+            ]);
         }
     }
 }

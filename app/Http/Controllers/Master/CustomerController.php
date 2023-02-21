@@ -2,24 +2,25 @@
 
 namespace App\Http\Controllers\Master;
 
+use App\ERP\Master\CustomerService;
 use App\Http\Controllers\Controller;
 use App\Models\Master\Customer;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
-    public function kode()
+    private CustomerService $customerService;
+
+    public function __construct()
     {
-        $query = Customer::latest('kode')->first();
-        if (!$query){
-            $num = 1;
-        } else {
-            $lastNum = (int) $query->last_num_master;
-            $num = $lastNum + 1;
-        }
-        return "C".sprintf("%05s", $num);
+        $this->customerService = new CustomerService();
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -34,59 +35,25 @@ class CustomerController extends Controller
             'diskon' => 'required',
             'keterangan' => 'nullable',
         ]);
-        $data['kode'] = $this->kode();
-        try {
-            $query = Customer::create($data);
-            return response()->json([
-                'status' => true,
-                'data' => $query
-            ], 200);
-        } catch (\Exception $e){
-            return response()->json([
-                'status' => false,
-                'messages' => $e->getMessage()
-            ]);
-        }
+        return $this->customerService->store($data);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function view(Request $request)
     {
-        try {
-            $query = Customer::query()->with(['sales', 'kota']);
-            if (!is_null($request->search)){
-                $query->where('nama', 'like', '%'.$request->search.'%')
-                    ->orWhereRelation('sales', 'nama', 'like', '%'.$request->search.'%')
-                    ->orWhere('telepon', 'like', '%'.$request->search.'%')
-                    ->orWhere('email', 'like', '%'.$request->search.'%')
-                    ->orWhere('alamat', 'like', '%'.$request->search.'%')
-                    ->orWhere('keterangan', 'like', '%'.$request->search.'%');
-            }
-            return response()->json([
-                'status' => true,
-                'data' => $query->get()
-            ], 200);
-        } catch (\Exception $e){
-            return response()->json([
-                'status' => false,
-                'messages' => $e->getMessage()
-            ], 403);
-        }
+        return $this->customerService->getData();
     }
 
+    /**
+     * @param $customer_id
+     * @return JsonResponse
+     */
     public function edit($customer_id)
     {
-        try {
-            $query = Customer::with(['sales', 'kota'])->find($customer_id);
-            return response()->json([
-                'status' => true,
-                'data' => $query
-            ], 200);
-        } catch (\Exception $e){
-            return response()->json([
-                'status' => false,
-                'messages' => $e->getMessage()
-            ], 403);
-        }
+        return $this->customerService->getDataById($customer_id);
     }
 
     public function update(Request $request)
@@ -104,34 +71,11 @@ class CustomerController extends Controller
             'diskon' => 'required',
             'keterangan' => 'nullable',
         ]);
-        try {
-            $query = Customer::find($data['customer_id'])->update($data);
-            return response()->json([
-                'status' => true,
-                'data' => $query
-            ], 200);
-        } catch (\Exception $e){
-            return response()->json([
-                'status' => false,
-                'messages' => $e->getMessage()
-            ], 403);
-        }
+        return $this->customerService->update($data);
     }
 
     public function destroy($id)
     {
-        try {
-            $query = Customer::where('id', $id)->delete();
-            return response()->json([
-                'status' => true,
-                'messages' => 'Data sudah di hapus',
-                'response' => $query
-            ], 200);
-        } catch (\Exception $e){
-            return response()->json([
-                'status' => false,
-                'messages' => $e->getMessage()
-            ], 403);
-        }
+        return $this->customerService->softDestroy($id);
     }
 }

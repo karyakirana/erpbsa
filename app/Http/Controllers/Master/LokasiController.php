@@ -2,81 +2,55 @@
 
 namespace App\Http\Controllers\Master;
 
+use App\ERP\Master\LokasiService;
 use App\Http\Controllers\Controller;
-use App\Models\Master\Lokasi;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class LokasiController extends Controller
 {
-    protected function kode()
+    private LokasiService $lokasiService;
+
+    public function __construct()
     {
-        $data = Lokasi::latest('kode')->first();
-        if (!$data){
-            $num = 1;
-        } else {
-            $lastNum = (int) $data->last_num_master;
-            $num = $lastNum + 1;
-        }
-        return "L".sprintf("%05s", $num);
+        $this->lokasiService = new LokasiService();
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function getData(Request $request)
     {
-        try {
-            $query = Lokasi::query();
-            if (!is_null($request->search)){
-                $query->where('nama', 'like', '%'.$request->search.'%')
-                    ->orWhere('keterangan', 'like', '%'.$request->search.'%');
-            }
-            return response()->json([
-                'status' => true,
-                'data' => $query->get()
-            ], 200);
-        } catch (\Exception $e){
-            return response()->json([
-                'status' => false,
-                'messages' => $e->getMessage()
-            ], 403);
-        }
+        return $this->lokasiService->getData();
     }
 
-    public function edit($jabatan_id)
+    /**
+     * @param $lokasi_id
+     * @return JsonResponse
+     */
+    public function edit($lokasi_id)
     {
-        try {
-            $query = Lokasi::find($jabatan_id);
-            return response()->json([
-                'status' => true,
-                'data' => $query
-            ], 200);
-        } catch (\Exception $e){
-            return response()->json([
-                'status' => false,
-                'messages' => $e->getMessage()
-            ], 403);
-        }
+        return $this->lokasiService->getDataById($lokasi_id);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function store(Request $request)
     {
         $data = $request->validate([
             'nama' => 'required|max:50',
             'keterangan' => 'nullable'
         ]);
-        $data['kode'] = $this->kode();
-        try {
-            $query = Lokasi::create($data);
-            return response()->json([
-                'status' => true,
-                'data' => $query
-            ], 200);
-        } catch (\Exception $e){
-            return response()->json([
-                'status' => false,
-                'messages' => $e->getMessage()
-            ], 403);
-        }
+        return $this->lokasiService->store($data);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function update(Request $request)
     {
         $data = $request->validate([
@@ -85,33 +59,15 @@ class LokasiController extends Controller
             'keterangan' => 'nullable'
         ]);
 
-        try {
-            $query = Lokasi::find($data['lokasi_id'])->update($data);
-            return response()->json([
-                'status' => true,
-                'data' => $query
-            ], 200);
-        } catch (\Exception $e){
-            return response()->json([
-                'status' => false,
-                'messages' => $e->getMessage()
-            ], 403);
-        }
+        return $this->lokasiService->update($data);
     }
 
+    /**
+     * @param $id
+     * @return JsonResponse
+     */
     public function destroy($id)
     {
-        try {
-            $query = Lokasi::destroy($id);
-            return response()->json([
-                'status' => true,
-                'messages' => 'Data sudah di hapus'
-            ], 200);
-        } catch (\Exception $e){
-            return response()->json([
-                'status' => false,
-                'messages' => $e->getMessage()
-            ], 403);
-        }
+        return $this->lokasiService->softDestroy($id);
     }
 }

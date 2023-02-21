@@ -2,81 +2,56 @@
 
 namespace App\Http\Controllers\Master;
 
+use App\ERP\Master\ProdukKategoriService;
 use App\Http\Controllers\Controller;
 use App\Models\Master\ProdukKategori;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ProdukKategoriController extends Controller
 {
-    protected function kode()
+    private ProdukKategoriService $kategoriService;
+
+    public function __construct()
     {
-        $data = ProdukKategori::latest('kode')->first();
-        if (!$data){
-            $num = 1;
-        } else {
-            $lastNum = (int) $data->last_num_master;
-            $num = $lastNum + 1;
-        }
-        return "K".sprintf("%05s", $num);
+        $this->kategoriService = new ProdukKategoriService();
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function store(Request $request)
     {
         $data = $request->validate([
             'nama' => 'required|max:50',
             'keterangan' => 'nullable'
         ]);
-        $data['kode'] = $this->kode();
-        try {
-            $query = ProdukKategori::create($data);
-            return response()->json([
-                'status' => true,
-                'data' => $query
-            ], 200);
-        } catch (\Exception $e){
-            return response()->json([
-                'status' => false,
-                'messages' => $e->getMessage()
-            ], 403);
-        }
+        return $this->kategoriService->store($data);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function view(Request $request)
     {
-        try {
-            $query = ProdukKategori::query();
-            if (!is_null($request->search)){
-                $query->where('nama', 'like', '%'.$request->search.'%')
-                    ->orWhere('keterangan', 'like', '%'.$request->search.'%');
-            }
-            return response()->json([
-                'status' => true,
-                'data' => $query->get()
-            ], 200);
-        } catch (\Exception $e){
-            return response()->json([
-                'status' => false,
-                'messages' => $e->getMessage()
-            ], 403);
-        }
+        return $this->kategoriService->getData();
     }
 
+    /**
+     * @param $produk_kategori_id
+     * @return JsonResponse
+     */
     public function edit($produk_kategori_id)
     {
-        try {
-            $query = ProdukKategori::find($produk_kategori_id);
-            return response()->json([
-                'status' => true,
-                'data' => $query
-            ], 200);
-        } catch (\Exception $e){
-            return response()->json([
-                'status' => 403,
-                'messages' => $e->getMessage()
-            ], 403);
-        }
+        return $this->kategoriService->getDataById($produk_kategori_id);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function update(Request $request)
     {
         $data = $request->validate([
@@ -84,34 +59,15 @@ class ProdukKategoriController extends Controller
             'nama' => 'required|max:50',
             'keterangan' => 'nullable'
         ]);
-
-        try {
-            $query = ProdukKategori::find($data['produk_kategori_id'])->update($data);
-            return response()->json([
-                'status' => true,
-                'data' => $query
-            ], 200);
-        } catch (\Exception $e){
-            return response()->json([
-                'status' => false,
-                'messages' => $e->getMessage()
-            ], 403);
-        }
+        return $this->kategoriService->update($data);
     }
 
+    /**
+     * @param $id
+     * @return JsonResponse
+     */
     public function destroy($id)
     {
-        try {
-            $query = ProdukKategori::destroy($id);
-            return response()->json([
-                'status' => true,
-                'messages' => 'Data sudah di hapus'
-            ], 200);
-        } catch (\Exception $e){
-            return response()->json([
-                'status' => false,
-                'messages' => $e->getMessage()
-            ], 403);
-        }
+        return $this->kategoriService->softDestroy($id);
     }
 }

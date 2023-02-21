@@ -2,81 +2,55 @@
 
 namespace App\Http\Controllers\Master;
 
+use App\ERP\Master\JabatanService;
 use App\Http\Controllers\Controller;
-use App\Models\Master\Jabatan;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class JabatanController extends Controller
 {
-    protected function kode()
+    private JabatanService $jabatanService;
+
+    public function __construct()
     {
-        $customer = Jabatan::latest('kode')->first();
-        if (!$customer){
-            $num = 1;
-        } else {
-            $lastNum = (int) $customer->last_num_master;
-            $num = $lastNum + 1;
-        }
-        return "J".sprintf("%05s", $num);
+        $this->jabatanService = new JabatanService();
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function getData(Request $request)
     {
-        try {
-            $query = Jabatan::query();
-            if (!is_null($request->search)){
-                $query->where('nama', 'like', '%'.$request->search.'%')
-                    ->orWhere('keterangan', 'like', '%'.$request->search.'%');
-            }
-            return response()->json([
-                'status' => true,
-                'data' => $query->get()
-            ]);
-        } catch (\Exception $e){
-            return response()->json([
-                'status' => false,
-                'messages' => $e->getMessage()
-            ]);
-        }
+        return $this->jabatanService->getData();
     }
 
+    /**
+     * @param $jabatan_id
+     * @return JsonResponse
+     */
     public function edit($jabatan_id)
     {
-        try {
-            $jabatan = Jabatan::find($jabatan_id);
-            return response()->json([
-                'status' => true,
-                'data' => $jabatan
-            ]);
-        } catch (\Exception $e){
-            return response()->json([
-                'status' => false,
-                'messages' => $e->getMessage()
-            ]);
-        }
+        return $this->jabatanService->getDataById($jabatan_id);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function store(Request $request)
     {
         $data = $request->validate([
             'nama' => 'required|max:50',
             'keterangan' => 'nullable'
         ]);
-        $data['kode'] = $this->kode();
-        try {
-            $jabatan = Jabatan::create($data);
-            return response()->json([
-                'status' => true,
-                'data' => $jabatan
-            ], 200);
-        } catch (\Exception $e){
-            return response()->json([
-                'status' => false,
-                'messages' => $e->getMessage()
-            ]);
-        }
+        return $this->jabatanService->store($data);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function update(Request $request)
     {
         $data = $request->validate([
@@ -84,34 +58,15 @@ class JabatanController extends Controller
             'nama' => 'required|max:50',
             'keterangan' => 'nullable'
         ]);
-
-        try {
-            $jabatan = Jabatan::find($data['jabatan_id'])->update($data);
-            return response()->json([
-                'status' => true,
-                'data' => $jabatan
-            ], 200);
-        } catch (\Exception $e){
-            return response()->json([
-                'status' => false,
-                'messages' => $e->getMessage()
-            ], 403);
-        }
+        return $this->jabatanService->update($data);
     }
 
+    /**
+     * @param $id
+     * @return JsonResponse
+     */
     public function destroy($id)
     {
-        try {
-            $jabatan = Jabatan::destroy($id);
-            return response()->json([
-                'status' => true,
-                'messages' => 'Data sudah di hapus'
-            ], 200);
-        } catch (\Exception $e){
-            return response()->json([
-                'status' => false,
-                'messages' => $e->getMessage()
-            ], 403);
-        }
+        return $this->jabatanService->softDestroy($id);
     }
 }

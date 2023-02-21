@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Penjualan;
 
+use App\ERP\Penjualan\PenjualanService;
 use App\Http\Controllers\Controller;
 use App\Models\Penjualan\Penjualan;
 use Illuminate\Http\JsonResponse;
@@ -9,25 +10,17 @@ use Illuminate\Http\Request;
 
 class PenjualanController extends Controller
 {
-    protected function kode()
+    private PenjualanService $service;
+
+    public function __construct()
     {
-        $query = Penjualan::query()
-            ->where('active_cash', session('ClosedCash'))
-            ->latest('kode');
-
-        // check last num
-        if ($query->doesntExist()) {
-            return '0001/PJ/'. date('Y');
-        }
-
-        $num = (int) $query->first()->last_num_trans + 1;
-        return sprintf("%04s", $num)."/PJ/".date('Y');
+        $this->service = new PenjualanService();
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @return JsonResponse
      */
     public function store(Request $request)
@@ -47,27 +40,9 @@ class PenjualanController extends Controller
             'biaya_lain' => 'nullable',
             'total_bayar' => 'required',
             'keterangan' => 'nullable',
-            'data_detail' => 'required|array'
+            'penjualan_detail_store' => 'required|array'
         ]);
-        $data['kode'] = $this->kode();
-        $data['active_cash'] = set_closed_cash(\Auth::id());
-        $data['user_id'] = \Auth::id();
-        \DB::beginTransaction();
-        try {
-            $penjualan = Penjualan::create($data);
-            $penjualan->penjualanDetail()->createMany($data['data_detail']);
-            \DB::commit();
-            return response()->json([
-                'status'=> true,
-                'data' => $penjualan->refresh()
-            ], 200);
-        } catch (\Exception $e){
-            \DB::rollBack();
-            return response()->json([
-                'status' => false,
-                'messages' => $e->getMessage()
-            ]);
-        }
+        return $this->service->store($data);
     }
 
     /**
@@ -78,35 +53,7 @@ class PenjualanController extends Controller
      */
     public function show(Request $request)
     {
-        try {
-            $penjualan = Penjualan::query()
-                ->with([
-                    'customer',
-                    'users',
-                    'sales',
-                    'penjualanDetail',
-                    'penjualanDetail.persediaan',
-                    'penjualanDetail.persediaan.produk',
-                    'penjualanDetail.persediaan.lokasi',
-                ]);
-            if (!is_null($request->search)){
-                $penjualan->where('active_cash', session('active_cash'))
-                    ->orWhereRelation('customer', 'nama', 'like', '%'.$request->search.'%')
-                    ->orWhereRelation('sales', 'nama', 'like', '%'.$request->search.'%')
-                    ->orWhereRelation('users', 'name', 'like', '%'.$request->search.'%')
-                    ->orWhere('kode', 'like', '%'.$request->search.'%')
-                    ->orWhere('keterangan', 'like', '%'.$request->search.'%');
-            }
-            return response()->json([
-                'status' => true,
-                'data' => $penjualan->get()
-            ], 200);
-        } catch (\Exception $e){
-            return response()->json([
-                'status' => false,
-                'messages' => $e->getMessage()
-            ], 403);
-        }
+        return $this->service->getData();
     }
 
     /**
@@ -117,22 +64,7 @@ class PenjualanController extends Controller
      */
     public function edit($penjualan_id)
     {
-        try {
-            $penjualan = Penjualan::find($penjualan_id)
-                ->with([
-                    'supplier',
-                    'users'
-                ]);
-            return response()->json([
-                'status' => true,
-                'data' => $penjualan
-            ], 200);
-        } catch (\Exception $e){
-            return response()->json([
-                'status' => false,
-                'messages' => $e->getMessage()
-            ], 403);
-        }
+        return $this->service->getById($penjualan_id);
     }
 
     /**
@@ -159,28 +91,9 @@ class PenjualanController extends Controller
             'biaya_lain' => 'nullable',
             'total_bayar' => 'required',
             'keterangan' => 'nullable',
-            'data_detail' => 'required|array'
+            'penjualan_detail_store' => 'required|array'
         ]);
-        \DB::beginTransaction();
-        try {
-            $penjualan = Penjualan::find($request['penjualan_id']);
-            // rollback
-            $penjualan->penjualanDetail()->delete();
-            // update
-            $penjualan->update($data);
-            $penjualan->penjualanDetail()->createMany($data['data_detail']);
-            \DB::commit();
-            return response()->json([
-                'status' => true,
-                'data' => $penjualan->refresh()
-            ], 200);
-        } catch (\Exception $e){
-            \DB::rollBack();
-            return response()->json([
-                'status'=>false,
-                'messages' => $e->getMessage()
-            ], 403);
-        }
+        return $this->service->update($data);
     }
 
     /**
@@ -191,21 +104,6 @@ class PenjualanController extends Controller
      */
     public function destroy($id)
     {
-        \DB::beginTransaction();
-        try {
-            $query = Penjualan::find($id);
-            $query->penjualanDetail()->delete();
-            $query->delete();
-            \DB::commit();
-            return response()->json([
-                'status'=>true,
-                'messages' => 'Data Sudah di hapus'
-            ], 200);
-        } catch (\Exception $e){
-            return response()->json([
-                'status' => false,
-                'messages' => $e->getMessage()
-            ], 403);
-        }
+        return $this->service->destroy($id);
     }
 }

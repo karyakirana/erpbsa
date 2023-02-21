@@ -2,25 +2,22 @@
 
 namespace App\Http\Controllers\Akuntansi;
 
+use App\ERP\Keuangan\AkunKategoriService;
 use App\Http\Controllers\Controller;
-use App\Models\Akuntansi\AkunKategori;
 use Illuminate\Http\Request;
 
 class AkunKategoriController extends Controller
 {
+    private AkunKategoriService $akunKategoriService;
+
+    public function __construct()
+    {
+        $this->akunKategoriService = new AkunKategoriService();
+    }
+
     public function index()
     {
-        try {
-            return response()->json([
-                'status' => true,
-                'data' => AkunKategori::all()
-            ]);
-        } catch (\Exception $e){
-            return response()->json([
-                'status'=>false,
-                'messages' => $e->getMessage()
-            ]);
-        }
+        return $this->akunKategoriService->getData();
     }
 
     public function store(Request $request)
@@ -30,36 +27,12 @@ class AkunKategoriController extends Controller
             'nama' => 'required',
             'keterangan' => 'nullable'
         ]);
-        \DB::beginTransaction();
-        try {
-            $store = AkunKategori::create($data);
-            \DB::commit();
-            return response()->json([
-                'status' => true,
-                '$data' => $store
-            ]);
-        } catch (\Exception $e){
-            return response()->json([
-                'status'=>false,
-                'messages' => $e->getMessage()
-            ]);
-        }
+        return $this->akunKategoriService->store($data);
     }
 
     public function edit($id)
     {
-        $data = AkunKategori::find($id);
-        try {
-            return response()->json([
-                'status' => true,
-                '$data' => $data
-            ]);
-        } catch (\Exception $e){
-            return response()->json([
-                'status'=>false,
-                'messages' => $e->getMessage()
-            ]);
-        }
+        return $this->akunKategoriService->getDataById($id);
     }
 
     public function update(Request $request)
@@ -70,37 +43,11 @@ class AkunKategoriController extends Controller
             'nama' => 'required',
             'keterangan' => 'nullable'
         ]);
-        \DB::beginTransaction();
-        try {
-            $update = AkunKategori::find($data['akun_kategori_id'])->update($data);
-            \DB::commit();
-            return response()->json([
-                'status' => true,
-                '$data' => $update
-            ]);
-        } catch (\Exception $e){
-            return response()->json([
-                'status'=>false,
-                'messages' => $e->getMessage()
-            ]);
-        }
+        return $this->akunKategoriService->update($data);
     }
 
     public function destroy($id)
     {
-        \DB::beginTransaction();
-        try {
-            $update = AkunKategori::destroy($id);
-            \DB::commit();
-            return response()->json([
-                'status' => true,
-                '$data' => $update
-            ]);
-        } catch (\Exception $e){
-            return response()->json([
-                'status'=>false,
-                'messages' => $e->getMessage()
-            ]);
-        }
+        return $this->akunKategoriService->softDestroy($id);
     }
 }

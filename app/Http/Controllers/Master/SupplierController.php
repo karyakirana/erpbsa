@@ -2,24 +2,25 @@
 
 namespace App\Http\Controllers\Master;
 
+use App\ERP\Master\SupplierService;
 use App\Http\Controllers\Controller;
 use App\Models\Master\Supplier;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class SupplierController extends Controller
 {
-    protected function kode()
+    private SupplierService $service;
+
+    public function __construct()
     {
-        $data = Supplier::latest('kode')->first();
-        if (!$data){
-            $num = 1;
-        } else {
-            $lastNum = (int) $data->last_num_master;
-            $num = $lastNum + 1;
-        }
-        return "S".sprintf("%05s", $num);
+        $this->service = new SupplierService();
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -31,59 +32,31 @@ class SupplierController extends Controller
             'kota_id' => 'required',
             'keterangan' => 'nullable'
         ]);
-        $data ['kode'] = $this->kode();
-        try {
-            $query = Supplier::create($data);
-            return response()->json([
-                'status' => true,
-                'data' => $query
-            ]);
-        } catch (\Exception $e){
-            return response()->json([
-                'status' => false,
-                'messages' => $e->getMessage()
-            ]);
-        }
+        return $this->service->store($data);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function view(Request $request)
     {
-        try {
-            $query = Supplier::query()->with(['kota']);
-            if (!is_null($request->search)){
-                $query->where('nama', 'like', '%'.$request->search.'%')
-                    ->orWhere('telepon', 'like', '%'.$request->search.'%')
-                    ->orWhere('email', 'like', '%'.$request->search.'%')
-                    ->orWhere('keterangan', 'like', '%'.$request->search.'%');
-            }
-            return response()->json([
-                'status' => true,
-                'data' => $query->get()
-            ], 200);
-        } catch (\Exception $e){
-            return response()->json([
-                'status' => false,
-                'messages' => $e->getMessage()
-            ], 403);
-        }
+        return $this->service->getData();
     }
 
+    /**
+     * @param $supplier_id
+     * @return JsonResponse
+     */
     public function edit($supplier_id)
     {
-        try {
-            $query = Supplier::with(['kota'])->find($supplier_id);
-            return response()->json([
-                'status' => true,
-                'data' => $query
-            ], 200);
-        } catch (\Exception $e){
-            return response()->json([
-                'status' => false,
-                'messages' => $e->getMessage()
-            ], 403);
-        }
+        return $this->service->getDataById($supplier_id);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function update(Request $request)
     {
         $data = $request->validate([
@@ -96,33 +69,15 @@ class SupplierController extends Controller
             'kota_id' => 'required',
             'keterangan' => 'nullable'
         ]);
-        try {
-            $query = Supplier::find($data['supplier_id'])->update($data);
-            return response()->json([
-                'status' => true,
-                'data' => $query
-            ]);
-        } catch (\Exception $e){
-            return response()->json([
-                'status' => false,
-                'messages' => $e->getMessage()
-            ]);
-        }
+        return $this->service->update($data);
     }
 
+    /**
+     * @param $id
+     * @return JsonResponse
+     */
     public function destroy($id)
     {
-        try {
-            $query = Supplier::destroy($id);
-            return response()->json([
-                'status' => true,
-                'messages' => 'Data sudah di hapus'
-            ], 200);
-        } catch (\Exception $e){
-            return response()->json([
-                'status' => false,
-                'messages' => $e->getMessage()
-            ], 403);
-        }
+        return $this->service->softDestroy($id);
     }
 }

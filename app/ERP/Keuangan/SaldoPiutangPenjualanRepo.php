@@ -13,8 +13,25 @@ class SaldoPiutangPenjualanRepo
         $this->saldo = $saldo;
     }
 
-    public function create()
+    private function create()
     {
-        return SaldoPiutangPenjualan::create();
+        return SaldoPiutangPenjualan::create([
+            'customer_id' => $this->customer_id,
+            'saldo' => $this->saldo
+        ]);
+    }
+
+    public function increment()
+    {
+        $query = SaldoPiutangPenjualan::find($this->customer_id);
+        if (is_null($query)){
+            return $this->create();
+        }
+        return $query->increment('saldo', $this->saldo);
+    }
+
+    public function decrement()
+    {
+        return SaldoPiutangPenjualan::find($this->customer_id)->decrement('saldo', $this->saldo);
     }
 }

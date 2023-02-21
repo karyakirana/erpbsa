@@ -2,24 +2,24 @@
 
 namespace App\Http\Controllers\Master;
 
+use App\ERP\Master\PegawaiService;
 use App\Http\Controllers\Controller;
-use App\Models\Master\Pegawai;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class PegawaiController extends Controller
 {
-    public function kode()
+    private PegawaiService $pegawaiService;
+
+    public function __construct()
     {
-        $query = Pegawai::latest('kode')->first();
-        if (!$query){
-            $num = 1;
-        } else {
-            $lastNum = (int) $query->last_num_master;
-            $num = $lastNum + 1;
-        }
-        return "E".sprintf("%05s", $num);
+        $this->pegawaiService = new PegawaiService();
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -33,62 +33,31 @@ class PegawaiController extends Controller
             'kota_id' => 'required',
             'keterangan' => 'nullable'
         ]);
-        $data['kode'] = $this->kode();
-        $data['status'] = 'active';
-        try {
-            $query = Pegawai::create($data);
-            return response()->json([
-                'status' => true,
-                'data' => $query
-            ], 200);
-        } catch (\Exception $e){
-            return response()->json([
-                'status' => false,
-                'messages' => $e->getMessage()
-            ], 403);
-        }
+        return $this->pegawaiService->store($data);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function view(Request $request)
     {
-        try {
-            $query = Pegawai::query()->with(['jabatan', 'kota']);
-            if (!is_null($request->search)){
-                $query->where('nama', 'like', '%'.$request->search.'%')
-                    ->orWhereRelation('jabatan', 'nama', 'like', '%'.$request->search.'%')
-                    ->orWhere('telepon', 'like', '%'.$request->search.'%')
-                    ->orWhere('email', 'like', '%'.$request->search.'%')
-                    ->orWhere('alamat', 'like', '%'.$request->search.'%')
-                    ->orWhere('keterangan', 'like', '%'.$request->search.'%');
-            }
-            return response()->json([
-                'status' => true,
-                'data' => $query->get()
-            ], 200);
-        } catch (\Exception $e){
-            return response()->json([
-                'status' => false,
-                'messages' => $e->getMessage()
-            ], 403);
-        }
+        return $this->pegawaiService->getData();
     }
 
+    /**
+     * @param $pegawai_id
+     * @return JsonResponse
+     */
     public function edit($pegawai_id)
     {
-        try {
-            $jabatan = Pegawai::with(['kota', 'jabatan'])->find($pegawai_id);
-            return response()->json([
-                'status' => true,
-                'data' => $jabatan
-            ], 200);
-        } catch (\Exception $e){
-            return response()->json([
-                'status' => false,
-                'messages' => $e->getMessage()
-            ], 403);
-        }
+        return $this->pegawaiService->getDataById($pegawai_id);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function update(Request $request)
     {
         $data = $request->validate([
@@ -104,33 +73,15 @@ class PegawaiController extends Controller
             'keterangan' => 'nullable'
         ]);
 
-        try {
-            $query = Pegawai::find($data['pegawai_id'])->update($data);
-            return response()->json([
-                'status' => true,
-                'data' => $query
-            ], 200);
-        } catch (\Exception $e){
-            return response()->json([
-                'status' => false,
-                'messages' => $e->getMessage()
-            ], 403);
-        }
+        return $this->pegawaiService->update($data);
     }
 
+    /**
+     * @param $id
+     * @return JsonResponse
+     */
     public function destroy($id)
     {
-        try {
-            $query = Pegawai::destroy($id);
-            return response()->json([
-                'status' => true,
-                'messages' => 'Data sudah di hapus'
-            ], 200);
-        } catch (\Exception $e){
-            return response()->json([
-                'status' => 403,
-                'messages' => $e->getMessage()
-            ], 403);
-        }
+        return $this->pegawaiService->softDestroy($id);
     }
 }

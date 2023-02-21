@@ -153,4 +153,7 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::delete('akun/tipe/{akun_tipe_id}/edit', [\App\Http\Controllers\Akuntansi\AkunTipeController::class, 'destroy']);
 
     // coa config
+    Route::get('config/coa/', [\App\Http\Controllers\Akuntansi\CoaConfigController::class, 'index']);
+    Route::get('config/coa/edit/{config}', [\App\Http\Controllers\Akuntansi\CoaConfigController::class, 'edit']);
+    Route::put('config/coa', [\App\Http\Controllers\Akuntansi\CoaConfigController::class, 'update']);
 });

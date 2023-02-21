@@ -62,3 +62,56 @@ if(!function_exists("get_closed_cash")){
         return $data->active;
     }
 }
+
+if(!function_exists("exception_rollback_helper")){
+    function exception_rollback_helper(Exception $e){
+        DB::rollBack();
+        return response()->json([
+            'status' => false,
+            'message' => $e->getMessage()
+        ]);
+    }
+}
+
+if (!function_exists("commit_helper")){
+    function commit_helper($something){
+        DB::commit();
+        return response()->json([
+            'status' => true,
+            'data' => $something
+        ]);
+    }
+}
+
+if (!function_exists("master_kode_helper")){
+    function master_kode_helper($model, $prefix){
+        $model = $model::latest('kode')->first();
+        if (is_null($model)){
+            $num = 1;
+        } else {
+            $lastNum = (int) $model->last_num_master;
+            $num = $lastNum + 1;
+        }
+        return $prefix.sprintf("%05s", $num);
+    }
+}
+
+if (!function_exists("trans_kode_helper")){
+    function trans_kode_helper($model, $prefix, $kondisi = NULL){
+        $query = $model::query()
+            ->where('active_cash', get_closed_cash());
+        if (!is_null($kondisi)){
+            $query = $query->where('kondisi', $kondisi)->latest('kode');
+            $kodeKondisi = ($kondisi == 'baik') ? $prefix : $prefix.'R';
+            if ($query->doesntExist()){
+                return "0001/{$kodeKondisi}/".date('Y');
+            }
+
+            $num = (int) $query->first()->last_num_trans + 1;
+            return sprintf("%04s", $num)."/{$kodeKondisi}/".date('Y');
+        }
+        $query = $query->latest('kode');
+        $num = (int) $query->first()->last_num_trans + 1;
+        return sprintf("%04s", $num)."/{$prefix}/".date('Y');
+    }
+}

@@ -2,6 +2,7 @@
 
 namespace App\Models\Penjualan;
 
+use App\Models\Keuangan\JurnalTransaksi;
 use App\Models\Keuangan\PiutangPenjualan;
 use App\Models\Master\Customer;
 use App\Models\Master\KodeTrait;
@@ -58,5 +59,10 @@ class Penjualan extends Model
     public function piutangPenjualan()
     {
         return $this->morphOne(PiutangPenjualan::class, 'piutangablePenjualan', 'piutangable_penjualan_type', 'piutangable_penjualan_id');
+    }
+
+    public function jurnal()
+    {
+        return $this->morphMany(JurnalTransaksi::class, 'jurnalableTransaksi', 'jurnalable_transaksi_type', 'jurnalable_transaksi_id');
     }
 }

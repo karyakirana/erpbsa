@@ -2,25 +2,23 @@
 
 namespace App\Http\Controllers\Akuntansi;
 
+use App\ERP\Keuangan\AkunTipeService;
 use App\Http\Controllers\Controller;
 use App\Models\Akuntansi\AkunTipe;
 use Illuminate\Http\Request;
 
 class AkunTipeController extends Controller
 {
+    private AkunTipeService $akunTipeService;
+
+    public function __construct()
+    {
+        $this->akunTipeService = new AkunTipeService();
+    }
+
     public function index()
     {
-        try {
-            return response()->json([
-                'status' => true,
-                'data' => AkunTipe::with(['akunKategori'])->get()
-            ]);
-        } catch (\Exception $e){
-            return response()->json([
-                'status'=>false,
-                'messages' => $e->getMessage()
-            ]);
-        }
+        return $this->akunTipeService->getData();
     }
 
     public function store(Request $request)
@@ -30,36 +28,12 @@ class AkunTipeController extends Controller
             'nama' => 'required',
             'keterangan' => 'nullable'
         ]);
-        \DB::beginTransaction();
-        try {
-            $store = AkunTipe::create($data);
-            \DB::commit();
-            return response()->json([
-                'status' => true,
-                '$data' => $store
-            ]);
-        } catch (\Exception $e){
-            return response()->json([
-                'status'=>false,
-                'messages' => $e->getMessage()
-            ]);
-        }
+        return $this->akunTipeService->store($data);
     }
 
     public function edit($id)
     {
-        $data = AkunTipe::with(['akunKategori'])->find($id);
-        try {
-            return response()->json([
-                'status' => true,
-                '$data' => $data
-            ]);
-        } catch (\Exception $e){
-            return response()->json([
-                'status'=>false,
-                'messages' => $e->getMessage()
-            ]);
-        }
+        return $this->akunTipeService->getDataById($id);
     }
 
     public function update(Request $request)
@@ -70,37 +44,11 @@ class AkunTipeController extends Controller
             'nama' => 'required',
             'keterangan' => 'nullable'
         ]);
-        \DB::beginTransaction();
-        try {
-            $update = AkunTipe::find($data['akun_kategori_id'])->update($data);
-            \DB::commit();
-            return response()->json([
-                'status' => true,
-                '$data' => $update
-            ]);
-        } catch (\Exception $e){
-            return response()->json([
-                'status'=>false,
-                'messages' => $e->getMessage()
-            ]);
-        }
+        return $this->akunTipeService->update($data);
     }
 
     public function destroy($id)
     {
-        \DB::beginTransaction();
-        try {
-            $update = AkunTipe::destroy($id);
-            \DB::commit();
-            return response()->json([
-                'status' => true,
-                '$data' => $update
-            ]);
-        } catch (\Exception $e){
-            return response()->json([
-                'status'=>false,
-                'messages' => $e->getMessage()
-            ]);
-        }
+        return $this->akunTipeService->softDestroy($id);
     }
 }
