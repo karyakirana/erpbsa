@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::connection('mysql_keuangan')->table('akun_tipe', function (Blueprint $table) {
-            $table->string('default_field')->after('nama');
+            $table->string('default_field')->nullable()->after('nama');
         });
     }
 

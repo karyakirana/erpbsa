@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::connection('mysql_keuangan')->table('coa_config', function (Blueprint $table) {
-            $table->string('default_field')->after('akun_id');
+            $table->string('default_field')->nullable()->after('akun_id');
         });
     }
 
