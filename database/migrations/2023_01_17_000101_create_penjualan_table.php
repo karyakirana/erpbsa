@@ -14,7 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('penjualan', function (Blueprint $table) {
-            $table->id();$table->string('active_cash', 150);
+            $table->id();
+            $table->string('active_cash', 150);
             $table->string('kode', 20);
             $table->unsignedBigInteger('penjualan_penawaran_id')->nullable();
             $table->boolean('draft');
