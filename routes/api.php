@@ -127,6 +127,8 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::put('penjualan/', [\App\Http\Controllers\Penjualan\PenjualanController::class, 'update']);
     Route::patch('penjualan/', [\App\Http\Controllers\Penjualan\PenjualanController::class, 'show']);
     Route::delete('penjualan/{penjualan_id}', [\App\Http\Controllers\Penjualan\PenjualanController::class, 'destroy']);
+
+    // penjualan KSO
 });
 
 // keuangan
@@ -156,6 +158,8 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::get('config/coa/', [\App\Http\Controllers\Akuntansi\CoaConfigController::class, 'index']);
     Route::get('config/coa/edit/{config}', [\App\Http\Controllers\Akuntansi\CoaConfigController::class, 'edit']);
     Route::put('config/coa', [\App\Http\Controllers\Akuntansi\CoaConfigController::class, 'update']);
+
+    // ppn config
 
     // route hutang pembelian
     Route::get('hutang/pembelian', [\App\Http\Controllers\Pembelian\HutangPembelianController::class, 'index']);
