@@ -63,7 +63,7 @@ class CustomerController extends Controller
             'jenis_instansi' => 'required|max:20',
             'nama' => 'required|max:50',
             'telepon' => 'required|max:20',
-            'email' => 'required|email|max:20',
+            'email' => 'required|email',
             'npwp' => 'nullable|max:20',
             'alamat' => 'required',
             'kota_id' => 'required',
