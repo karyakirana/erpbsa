@@ -156,4 +156,28 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::get('config/coa/', [\App\Http\Controllers\Akuntansi\CoaConfigController::class, 'index']);
     Route::get('config/coa/edit/{config}', [\App\Http\Controllers\Akuntansi\CoaConfigController::class, 'edit']);
     Route::put('config/coa', [\App\Http\Controllers\Akuntansi\CoaConfigController::class, 'update']);
+
+    // route hutang pembelian
+    Route::get('hutang/pembelian', [\App\Http\Controllers\Pembelian\HutangPembelianController::class, 'index']);
+    Route::get('hutang/pembelian/view/{hutang_pembelian_id}', [\App\Http\Controllers\Pembelian\HutangPembelianController::class, 'edit']);
+
+    // route piutang penjualan
+    Route::get('piutang/penjualan', [\App\Http\Controllers\Penjualan\PiutangPenjualanController::class, 'index']);
+    Route::get('piutang/penjualan/view/{piutang_penjualan_id}', [\App\Http\Controllers\Penjualan\PiutangPenjualanController::class, 'edit']);
+
+    // payment
+
+    // payment pembelian
+    Route::get('payment/penjualan');
+    Route::get('payment/penjualan/{payment_penjualan_id}');
+    Route::post('payment/penjualan');
+    Route::put('payment/penjualan');
+    Route::delete('payment/penjualan');
+
+    // payment penjualan
+    Route::get('payment/pembelian');
+    Route::get('payment/pembelian/{payment_pembelian_id}');
+    Route::post('payment/pembelian');
+    Route::put('payment/pembelian');
+
 });
