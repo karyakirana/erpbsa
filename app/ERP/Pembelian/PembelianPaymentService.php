@@ -1,28 +1,77 @@
 <?php namespace App\ERP\Pembelian;
 
 use App\ERP\PaymentInterface;
+use App\Models\Keuangan\PaymentHutangPembelian;
 
 class PembelianPaymentService implements PaymentInterface
 {
+    private function kode()
+    {
+        return NULL;
+    }
 
     public function getData()
     {
-        // TODO: Implement getData() method.
+        \DB::beginTransaction();
+        try {
+            $data = PaymentHutangPembelian::where('active_cash', get_closed_cash())
+                ->with([
+                    'customer',
+                    'users',
+                    'akun'
+                ])->get();
+            return commit_helper($data);
+        } catch (\Exception $e){
+            return exception_rollback_helper($e);
+        }
     }
 
     public function getById($id)
     {
-        // TODO: Implement getById() method.
+        \DB::beginTransaction();
+        try {
+            $data = PaymentHutangPembelian::where('active_cash', get_closed_cash())
+                ->with([
+                    'customer',
+                    'users',
+                    'akun'
+                ])->find($id);
+            return commit_helper($data);
+        } catch (\Exception $e){
+            return exception_rollback_helper($e);
+        }
     }
 
     public function store(array $data)
     {
-        // TODO: Implement store() method.
+        \DB::beginTransaction();
+        try {
+            $store = PaymentHutangPembelian::create($data);
+            // update status pembelian
+            // update status hutang pembelian
+            // create jurnal transaksi
+            // update neraca saldo
+            return commit_helper($store);
+        } catch (\Exception $e){
+            return exception_rollback_helper($e);
+        }
     }
 
     public function update(array $data)
     {
-        // TODO: Implement update() method.
+        \DB::beginTransaction();
+        try {
+            $payment = PaymentHutangPembelian::find($data['payment_hutang_pembelian_id']);
+            // rollback
+            $payment->update($data);
+            // update status pembelian
+            // update status hutang pembelian
+            // create jurnal transaksi
+            // update neraca saldo
+            return commit_helper($payment->refresh());
+        } catch (\Exception $e){
+            return exception_rollback_helper($e);
+        }
     }
 
     public function destroy($id)

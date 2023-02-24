@@ -13,13 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('payment_hutang_pembelian', function (Blueprint $table) {
+        Schema::connection('mysql_keuangan')->create('payment_hutang_pembelian', function (Blueprint $table) {
             $table->id();
+            $table->string('active_cash');
             $table->string('kode');
+            $table->date('tgl_payment');
             $table->unsignedBigInteger('customer_id');
+            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('akun_payment');
             $table->unsignedBigInteger('total_payment');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -30,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('payment_hutang_pembelian');
+        Schema::connection('mysql_keuangan')->dropIfExists('payment_hutang_pembelian');
     }
 };

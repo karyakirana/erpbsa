@@ -15,11 +15,15 @@ return new class extends Migration
     {
         Schema::connection('mysql_keuangan')->create('payment_piutang_penjualan', function (Blueprint $table) {
             $table->id();
+            $table->string('active_cash');
             $table->string('kode');
+            $table->date('tgl_payment');
             $table->unsignedBigInteger('customer_id');
+            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('akun_payment');
             $table->unsignedBigInteger('total_payment');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::connection('mysql_keuangan')->create('detail_payment_hutang_pembelian', function (Blueprint $table) {
             $table->id();
+            $table->unsignedInteger('payment_hutang_pembelian_id');
             $table->unsignedBigInteger('hutang_pembelian_id');
             $table->unsignedInteger('tagihan');
             $table->unsignedInteger('terbayar');

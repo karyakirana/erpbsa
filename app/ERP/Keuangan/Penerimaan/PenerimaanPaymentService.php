@@ -12,7 +12,7 @@ class PenerimaanPaymentService implements PaymentInterface
 
     public function getData()
     {
-        // TODO: Implement getData() method.
+        \DB::beginTransaction();
     }
 
     public function getById($id)
