@@ -14,6 +14,11 @@ class PembelianPaymentService implements PaymentInterface
      * 5. Mengubah status pembelian dan hutang pembelian menjadi terbayar (lunas atau sebagian)
      */
 
+    private $akun_hutang_pembelian;
+    private $field_akun_hutang_pembelian;
+    private $akun_setara_kas;
+    private $field_setara_kas;
+
     private function kode()
     {
         return NULL;
@@ -76,7 +81,7 @@ class PembelianPaymentService implements PaymentInterface
             $detail = $paymentHutangPembelian->paymentHutangPembelianDetail();
             foreach ($data['paymentHutangPembelianDetail'] as $row) {
                 // store detail
-                $paymentDetail = $detail->create();
+                $paymentDetail = $detail->create($row);
                 // update penjualan status
                 // update hutang status
             }
