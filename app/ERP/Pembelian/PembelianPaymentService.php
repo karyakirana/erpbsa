@@ -5,6 +5,15 @@ use App\Models\Keuangan\PaymentHutangPembelian;
 
 class PembelianPaymentService implements PaymentInterface
 {
+    /**
+     * pembelian payment :
+     * 1. menyimpan pembayaran atas single atau multi nota pembelian
+     * 2. bisa dibayar sebagian dan keseluruhan atas nota pembelian
+     * 3. Jurnal debet pada hutang pembelian
+     * 4. Jurnal kredit pada kas atau setara kas
+     * 5. Mengubah status pembelian dan hutang pembelian menjadi terbayar (lunas atau sebagian)
+     */
+
     private function kode()
     {
         return NULL;
@@ -42,16 +51,40 @@ class PembelianPaymentService implements PaymentInterface
         }
     }
 
+    private function loadCoaConfig()
+    {
+        //
+    }
+
+    private function keuanganProses()
+    {
+        //
+    }
+
+    private function rollbackKeuangan()
+    {
+        //
+    }
+
     public function store(array $data)
     {
         \DB::beginTransaction();
         try {
-            $store = PaymentHutangPembelian::create($data);
+            $data['kode'] = $this->kode();
+            $paymentHutangPembelian = PaymentHutangPembelian::create($data);
+            // store detail
+            $detail = $paymentHutangPembelian->paymentHutangPembelianDetail();
+            foreach ($data['paymentHutangPembelianDetail'] as $row) {
+                // store detail
+                $paymentDetail = $detail->create();
+                // update penjualan status
+                // update hutang status
+            }
             // update status pembelian
             // update status hutang pembelian
             // create jurnal transaksi
             // update neraca saldo
-            return commit_helper($store);
+            return commit_helper($paymentHutangPembelian->refresh());
         } catch (\Exception $e){
             return exception_rollback_helper($e);
         }
