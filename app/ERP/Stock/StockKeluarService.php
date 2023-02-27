@@ -1,6 +1,7 @@
 <?php namespace App\ERP\Stock;
 
 use App\ERP\TransactionInterface;
+use App\Models\Stock\StockKeluar;
 
 class StockKeluarService implements TransactionInterface
 {
@@ -13,17 +14,46 @@ class StockKeluarService implements TransactionInterface
 
     public function kode($kondisi = "baik")
     {
-        // TODO: Implement kode() method.
+        $query = StockKeluar::query()
+            ->where('active_cash', get_closed_cash())
+            ->where('kondisi', $kondisi)
+            ->latest('kode');
+
+        $kodeKondisi = ($kondisi == 'baik') ? 'SK' : 'SKR';
+
+        // check last num
+        if ($query->doesntExist()){
+            return "0001/{$kodeKondisi}/".date('Y');
+        }
+
+        $num = (int) $query->first()->last_num_trans + 1;
+        return sprintf("%04s", $num)."/{$kodeKondisi}/".date('Y');
     }
 
     public function getById($id)
     {
-        // TODO: Implement getById() method.
+        \DB::beginTransaction();
+        try {
+            $stockKeluar = StockKeluar::with([
+                //
+            ])->find($id);
+            return commit_helper($stockKeluar);
+        } catch (\Exception $e){
+            return exception_rollback_helper($e);
+        }
     }
 
     public function getData($active_cash = true)
     {
-        // TODO: Implement getData() method.
+        \DB::beginTransaction();
+        try {
+            $stockKeluar = StockKeluar::with([
+                //
+            ])->get();
+            return commit_helper($stockKeluar);
+        } catch (\Exception $e){
+            return exception_rollback_helper($e);
+        }
     }
 
     public function getWithDeletedData($active_cash = true)
@@ -33,12 +63,35 @@ class StockKeluarService implements TransactionInterface
 
     public function store(array $data)
     {
-        // TODO: Implement store() method.
+        \DB::beginTransaction();
+        try {
+            $data['kode'] = $this->kode($data['kondisi']);
+            $stockKeluar = StockKeluar::create($data);
+            // update persediaan
+            // create stock keluar detail
+            // proses keuangan
+            return commit_helper($stockKeluar);
+        } catch (\Exception $e){
+            return exception_rollback_helper($e);
+        }
     }
 
     public function update(array $data)
     {
-        // TODO: Implement update() method.
+        \DB::beginTransaction();
+        try {
+            $stockKeluar = StockKeluar::find($data['stock_keluar_id']);
+            // rollback keuangan
+            // rollback persediaan
+            // rollback stock keluar detail
+            $stockKeluar->update($data);
+            // update persediaan
+            // create stock keluar detail
+            // proses keuangan
+            return commit_helper($stockKeluar->refresh());
+        } catch (\Exception $e){
+            return exception_rollback_helper($e);
+        }
     }
 
     public function destroy($id)
