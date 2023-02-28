@@ -139,7 +139,7 @@ class PersediaanAwalService implements TransactionInterface
             // store persediaan detail
             $this->detail($persediaan_awal, $data);
             // keuangan : jurnal transaksi, neraca saldo awal, neraca saldo
-            $this->keuanganProses($persediaan_awal);
+            //$this->keuanganProses($persediaan_awal);
             return commit_helper($persediaan_awal->refresh());
         } catch (\Exception $e){
             return exception_rollback_helper($e);
@@ -166,7 +166,7 @@ class PersediaanAwalService implements TransactionInterface
             // store persediaan detail
             $this->detail($persediaan_awal, $data);
             // keuangan : jurnal transaksi, neraca saldo awal, neraca saldo
-            $this->keuanganProses($persediaan_awal);
+            // $this->keuanganProses($persediaan_awal);
             return commit_helper($persediaan_awal->refresh());
         } catch (\Exception $e){
             return exception_rollback_helper($e);
@@ -179,7 +179,7 @@ class PersediaanAwalService implements TransactionInterface
         try {
             $persediaan_awal = PersediaanAwal::find($id);
             /** rollback keuangan */
-            $this->rollbackKeuangan($persediaan_awal);
+            // $this->rollbackKeuangan($persediaan_awal);
             /** rollback persediaan awal detail dan persediaan */
             foreach ($persediaan_awal->persediaanAwalDetail as $row){
                 PersediaanRepository::rollbackStockMasuk($row->persediaan_id, $row->jumlah, 'stock_awal');

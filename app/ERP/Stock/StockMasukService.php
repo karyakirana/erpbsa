@@ -12,7 +12,7 @@ class StockMasukService implements TransactionInterface
     private $akun_persediaan_rusak;
     private $field_persediaan_rusak;
 
-    private function kode($kondisi = "baik")
+    public function kode($kondisi = "baik")
     {
         $query = StockMasuk::query()
             ->where('active_cash', get_closed_cash())
@@ -108,7 +108,8 @@ class StockMasukService implements TransactionInterface
     {
         \DB::beginTransaction();
         try {
-            //
+            $stockMasuk = StockMasuk::find($id);
+            return commit_helper($stockMasuk->refresh());
         } catch (\Exception $e){
             return exception_rollback_helper($e);
         }

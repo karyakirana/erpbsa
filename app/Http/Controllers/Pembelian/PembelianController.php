@@ -179,7 +179,7 @@ class PembelianController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Request $request
+     * @param $id
      * @return JsonResponse
      */
     public function destroy($id)

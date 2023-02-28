@@ -35,7 +35,11 @@ class StockKeluarService implements TransactionInterface
         \DB::beginTransaction();
         try {
             $stockKeluar = StockKeluar::with([
-                //
+                'stockableKeluar',
+                'stockKeluarDetail',
+                'stockKeluarDetail.persediaan',
+                'stockKeluarDetail.persediaan.produk',
+                'lokasi', 'supplier', 'customer', 'users'
             ])->find($id);
             return commit_helper($stockKeluar);
         } catch (\Exception $e){
@@ -48,7 +52,11 @@ class StockKeluarService implements TransactionInterface
         \DB::beginTransaction();
         try {
             $stockKeluar = StockKeluar::with([
-                //
+                'stockableKeluar',
+                'stockKeluarDetail',
+                'stockKeluarDetail.persediaan',
+                'stockKeluarDetail.persediaan.produk',
+                'lokasi', 'supplier', 'customer', 'users'
             ])->get();
             return commit_helper($stockKeluar);
         } catch (\Exception $e){
@@ -96,7 +104,13 @@ class StockKeluarService implements TransactionInterface
 
     public function destroy($id)
     {
-        // TODO: Implement destroy() method.
+        \DB::beginTransaction();
+        try {
+            $stockKeluar = StockKeluar::find($id);
+            return commit_helper($stockKeluar->refresh());
+        } catch (\Exception $e){
+            return exception_rollback_helper($e);
+        }
     }
 
     public function restoreDeletedData($id)

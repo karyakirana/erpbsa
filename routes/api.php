@@ -93,8 +93,15 @@ Route::middleware('auth:sanctum')->group(function (){
 
     // stock masuk
     Route::get('persediaan/masuk/pembelian/{id}', [\App\Http\Controllers\Stock\StockMasukPembelianController::class, 'edit']);
+    Route::get('persediaan/masuk/pembelian', [\App\Http\Controllers\Stock\StockMasukPembelianController::class, 'show']);
     Route::post('persediaan/masuk/pembelian', [\App\Http\Controllers\Stock\StockMasukPembelianController::class, 'store']);
-    Route::patch('persediaan/masuk/pembelian', [\App\Http\Controllers\Stock\StockMasukPembelianController::class, 'show']);
+
+    // stock masuk
+    Route::get('stock/masuk', [\App\Http\Controllers\Stock\StockMasukController::class, 'index']);
+    Route::get('stock/masuk/{id}/edit', [\App\Http\Controllers\Stock\StockMasukController::class, 'edit']);
+    Route::post('stock/masuk', [\App\Http\Controllers\Stock\StockMasukController::class, 'store']);
+    Route::put('stock/masuk', [\App\Http\Controllers\Stock\StockMasukController::class, 'update']);
+    Route::delete('stock/masuk/{id}/delete', [\App\Http\Controllers\Stock\StockMasukController::class, 'delete']);
 
     // stock keluar
     Route::get('persediaan/keluar/penjualan/{id}', [\App\Http\Controllers\Stock\StockKeluarPenjualanController::class, 'edit']);
@@ -102,6 +109,13 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::post('persediaan/keluar/penjualan', [\App\Http\Controllers\Stock\StockKeluarPenjualanController::class, 'store']);
     Route::put('persediaan/keluar/penjualan', [\App\Http\Controllers\Stock\StockKeluarPenjualanController::class, 'update']);
     Route::delete('persediaan/keluar/penjualan/{id}', [\App\Http\Controllers\Stock\StockKeluarPenjualanController::class, 'destroy']);
+
+    // stock keluar
+    Route::get('stock/keluar', [\App\Http\Controllers\Stock\StockKeluarController::class, 'index']);
+    Route::get('stock/keluar/{id}/edit', [\App\Http\Controllers\Stock\StockKeluarController::class, 'edit']);
+    Route::post('stock/keluar', [\App\Http\Controllers\Stock\StockKeluarController::class, 'store']);
+    Route::put('stock/keluar', [\App\Http\Controllers\Stock\StockKeluarController::class, 'update']);
+    Route::delete('stock/keluar/{id}/delete', [\App\Http\Controllers\Stock\StockKeluarController::class, 'delete']);
 });
 
 Route::middleware('auth:sanctum')->group(function (){

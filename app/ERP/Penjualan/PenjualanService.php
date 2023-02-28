@@ -128,7 +128,7 @@ class PenjualanService implements TransactionInterface
             $penjualan = Penjualan::create($data);
             $penjualan->penjualanDetail($data['penjualan_detail_store']);
             // keuangan proses : jurnal transaksi, neraca saldo
-            $this->keuanganProses($penjualan);
+            // $this->keuanganProses($penjualan);
             return commit_helper($penjualan->refresh());
         } catch (\Exception $e){
             return exception_rollback_helper($e);
@@ -149,7 +149,7 @@ class PenjualanService implements TransactionInterface
             $penjualan->update($data);
             $penjualan->penjualanDetail($data['penjualan_detail_store']);
             // keuangan proses : jurnal transaksi, neraca saldo
-            $this->keuanganProses($penjualan);
+            // $this->keuanganProses($penjualan);
             return commit_helper($penjualan->refresh());
         } catch (\Exception $e){
             return exception_rollback_helper($e);
