@@ -37,9 +37,7 @@ class PersediaanRepository
         $this->harga_beli = $harga_beli;
         $this->jumlah = $jumlah;
         $this->field = $field;
-        if (is_null($active_cash)){
-            $this->active_cash = set_closed_cash(auth()->id());
-        }
+        $this->active_cash = get_closed_cash();
     }
 
     protected function create()

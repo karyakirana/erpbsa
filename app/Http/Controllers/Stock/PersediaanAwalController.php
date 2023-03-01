@@ -31,7 +31,7 @@ class PersediaanAwalController extends Controller
             'total_barang' => 'required|numeric',
             'total_nominal' => 'required|numeric',
             'keterangan' => 'nullable',
-            'data_detail' => 'array'
+            'persediaan_awal_detail_store' => 'required'
         ]);
         return $this->persediaanAwalService->store($data);
     }

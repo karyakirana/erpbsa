@@ -69,7 +69,7 @@ if(!function_exists("exception_rollback_helper")){
         return response()->json([
             'status' => false,
             'message' => $e->getMessage()
-        ]);
+        ], 500);
     }
 }
 
