@@ -1,23 +1,37 @@
 <?php namespace App\ERP\Penjualan;
 
 use App\ERP\TransactionInterface;
+use App\Models\Penjualan\Penjualan;
+use App\Models\Penjualan\PenjualanRetur;
 
 class PenjualanReturService implements TransactionInterface
 {
 
     public function kode($kondisi = "baik")
     {
-        // TODO: Implement kode() method.
+        return null;
     }
 
     public function getById($id)
     {
-        // TODO: Implement getById() method.
+        \DB::beginTransaction();
+        try {
+            $data = PenjualanRetur::with([])->find($id);
+            return commit_helper($data);
+        } catch (\Exception $e){
+            return exception_rollback_helper($e);
+        }
     }
 
     public function getData($active_cash = true)
     {
-        // TODO: Implement getData() method.
+        \DB::beginTransaction();
+        try {
+            $data = PenjualanRetur::with([])->get();
+            return commit_helper($data);
+        } catch (\Exception $e){
+            return exception_rollback_helper($e);
+        }
     }
 
     public function getWithDeletedData($active_cash = true)
@@ -27,17 +41,35 @@ class PenjualanReturService implements TransactionInterface
 
     public function store(array $data)
     {
-        // TODO: Implement store() method.
+        \DB::beginTransaction();
+        try {
+            $store = Penjualan::create($data);
+            return commit_helper($store);
+        } catch (\Exception $e){
+            return exception_rollback_helper($e);
+        }
     }
 
     public function update(array $data)
     {
-        // TODO: Implement update() method.
+        \DB::beginTransaction();
+        try {
+            $penjualan_retur = Penjualan::find($data['penjualan_retur_id']);
+            return commit_helper($penjualan_retur);
+        } catch (\Exception $e){
+            return exception_rollback_helper($e);
+        }
     }
 
     public function destroy($id)
     {
-        // TODO: Implement destroy() method.
+        \DB::beginTransaction();
+        try {
+            $penjualan_retur = Penjualan::find($id);
+            return commit_helper($penjualan_retur);
+        } catch (\Exception $e){
+            return exception_rollback_helper($e);
+        }
     }
 
     public function restoreDeletedData($id)

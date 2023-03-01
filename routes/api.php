@@ -143,6 +143,11 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::delete('penjualan/{penjualan_id}', [\App\Http\Controllers\Penjualan\PenjualanController::class, 'destroy']);
 
     // penjualan KSO
+    Route::get('penjualankso');
+    Route::get('penjualankso/{penjualan_kso_id}');
+    Route::post('penjualankso');
+    Route::put('penjualankso');
+    Route::delete('penjualankso/{penjualan_kso_id}');
 });
 
 // keuangan

@@ -1,23 +1,36 @@
 <?php namespace App\ERP\Pembelian;
 
 use App\ERP\TransactionInterface;
+use App\Models\Pembelian\PembelianRetur;
 
 class PembelianReturService implements TransactionInterface
 {
 
     public function kode($kondisi = "baik")
     {
-        // TODO: Implement kode() method.
+        return null;
     }
 
     public function getById($id)
     {
-        // TODO: Implement getById() method.
+        \DB::beginTransaction();
+        try {
+            $data = PembelianRetur::with([])->find($id);
+            return commit_helper($data);
+        } catch (\Exception $e){
+            return exception_rollback_helper($e);
+        }
     }
 
     public function getData($active_cash = true)
     {
-        // TODO: Implement getData() method.
+        \DB::beginTransaction();
+        try {
+            $data = PembelianRetur::with([])->get();
+            return commit_helper($data);
+        } catch (\Exception $e){
+            return exception_rollback_helper($e);
+        }
     }
 
     public function getWithDeletedData($active_cash = true)
@@ -27,12 +40,26 @@ class PembelianReturService implements TransactionInterface
 
     public function store(array $data)
     {
-        // TODO: Implement store() method.
+        \DB::beginTransaction();
+        try {
+            $data['active_cash'] = get_closed_cash();
+            $data['kode'] = $this->kode();
+            $pembelian_retur = PembelianRetur::create($data);
+            return commit_helper($pembelian_retur);
+        } catch (\Exception $e){
+            return exception_rollback_helper($e);
+        }
     }
 
     public function update(array $data)
     {
-        // TODO: Implement update() method.
+        \DB::beginTransaction();
+        try {
+            $pembelian_retur = PembelianRetur::find($data['pembelian_retur_id']);
+            return commit_helper($pembelian_retur);
+        } catch (\Exception $e){
+            return exception_rollback_helper($e);
+        }
     }
 
     public function destroy($id)
