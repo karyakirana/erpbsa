@@ -87,7 +87,7 @@ class PersediaanRepository
                 $this->field => \DB::raw($this->field." + ".$this->jumlah),
                 'stock_saldo' => \DB::raw("stock_saldo + ".$this->jumlah),
             ]);
-            return $query->refresh();
+            return $query;
         }
         return $this->create();
     }
@@ -100,7 +100,7 @@ class PersediaanRepository
                 $this->field => \DB::raw($this->field." + ".$this->jumlah),
                 'stock_saldo' => \DB::raw("stock_saldo - ".$this->jumlah),
             ]);
-            return $query->refresh();
+            return $query;
         }
         return $this->create();
     }

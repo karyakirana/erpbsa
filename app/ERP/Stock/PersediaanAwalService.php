@@ -140,7 +140,7 @@ class PersediaanAwalService implements TransactionInterface
             $this->detail($persediaan_awal, $data);
             // keuangan : jurnal transaksi, neraca saldo awal, neraca saldo
             //$this->keuanganProses($persediaan_awal);
-            return commit_helper($persediaan_awal->refresh());
+            return commit_helper($persediaan_awal);
         } catch (\Exception $e){
             return exception_rollback_helper($e);
         }
@@ -167,7 +167,7 @@ class PersediaanAwalService implements TransactionInterface
             $this->detail($persediaan_awal, $data);
             // keuangan : jurnal transaksi, neraca saldo awal, neraca saldo
             // $this->keuanganProses($persediaan_awal);
-            return commit_helper($persediaan_awal->refresh());
+            return commit_helper($persediaan_awal);
         } catch (\Exception $e){
             return exception_rollback_helper($e);
         }
