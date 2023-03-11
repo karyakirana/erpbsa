@@ -72,7 +72,8 @@ class PersediaanAwalController extends Controller
             'user_id' => 'required',
             'total_barang' => 'required|numeric',
             'total_nominal' => 'required|numeric',
-            'keterangan' => 'nullable'
+            'keterangan' => 'nullable',
+            'persediaan_awal_detail_store' => 'required'
         ]);
         return $this->persediaanAwalService->update($data);
     }

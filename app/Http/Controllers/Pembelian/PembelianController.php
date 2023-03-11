@@ -45,7 +45,8 @@ class PembelianController extends Controller
             'biaya_lain' => 'nullable',
             'total_bayar' => 'required',
             'keterangan' => 'nullable',
-            'data_detail' => 'required|array',
+            //'data_detail' => 'required|array',
+            'pembelian_detail_store' => 'required'
         ]);
         $data['kode'] = $this->kode();
         $data['active_cash'] = set_closed_cash(auth()->id());
@@ -54,7 +55,10 @@ class PembelianController extends Controller
         \DB::beginTransaction();
         try {
             $pembelian = Pembelian::create($data);
-            $pembelian->pembelianDetail()->createMany($data['data_detail']);
+            //$pembelian->pembelianDetail()->createMany($data['data_detail']);
+
+            $pembelian->pembelianDetail()->createMany($data['pembelian_detail_store']);
+
             \DB::commit();
             return response()->json([
                 'status' => true,
@@ -151,7 +155,8 @@ class PembelianController extends Controller
             'biaya_lain' => 'nullable',
             'total_bayar' => 'required',
             'keterangan' => 'nullable',
-            'data_detail' => 'required|array',
+            //'data_detail' => 'required|array',
+            'pembelian_detail_store' => 'required'
         ]);
         $data['user_id'] = auth()->id();
         \DB::beginTransaction();
@@ -161,7 +166,10 @@ class PembelianController extends Controller
             $pembelian->pembelianDetail()->delete();
             // update
             $pembelian->update($data);
-            $pembelian->pembelianDetail()->createMany($data['data_detail']);
+            //$pembelian->pembelianDetail()->createMany($data['data_detail']);
+
+            $pembelian->pembelianDetail()->createMany($data['pembelian_detail_store']);
+
             \DB::commit();
             return response()->json([
                 'status' => true,

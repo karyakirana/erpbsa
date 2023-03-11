@@ -153,7 +153,7 @@ class PersediaanAwalService implements TransactionInterface
             $persediaan_awal = PersediaanAwal::find($data['persediaan_awal_id']);
             // rollback
             /** rollback keuangan */
-            $this->rollbackKeuangan($persediaan_awal);
+           // $this->rollbackKeuangan($persediaan_awal);
             /** rollback persediaan awal detail dan persediaan */
             foreach ($persediaan_awal->persediaanAwalDetail as $row){
                 PersediaanRepository::rollbackStockMasuk($row->persediaan_id, $row->jumlah, 'stock_awal');
