@@ -14,7 +14,8 @@ class PenjualanService implements TransactionInterface
     private $field_akun_penjualan;
     private $akun_piutang_penjualan;
     private $field_piutang_penjualan;
-    public function kode($kondisi = "baik")
+
+   public function kode($kondisi = "baik")
     {
         $penjualan = new Penjualan();
         return trans_kode_helper($penjualan, 'PJ');
